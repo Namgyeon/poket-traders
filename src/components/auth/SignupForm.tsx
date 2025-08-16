@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import Input from "../ui/Input/Input";
+import BaseLabel from "../ui/label/BaseLabel";
 
 export default function SignupForm() {
   const { register, handleSubmit } = useForm({
@@ -14,7 +15,10 @@ export default function SignupForm() {
   });
   return (
     <form className="flex flex-col gap-4">
-      <Input />
+      <div>
+        <BaseLabel label="Email" />
+        <Input />
+      </div>
     </form>
   );
 }
