@@ -7,12 +7,16 @@ import PasswordInput from "@/components/ui/Input/PasswordInput";
 import Button from "@/components/ui/Button/Button";
 
 export default function SignupForm() {
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
     defaultValues: {
       email: "",
       nickname: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
