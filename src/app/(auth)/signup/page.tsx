@@ -1,5 +1,6 @@
 import SignupForm from "@/components/auth/SignupForm";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function SignUpPage() {
   return (
@@ -17,6 +18,12 @@ export default function SignUpPage() {
       <div className="w-full max-w-md">
         <SignupForm />
       </div>
+      <p>
+        이미 계정이 있으신가요?{" "}
+        <Link href="/signin" className="underline hover:text-sky-500">
+          로그인
+        </Link>
+      </p>
     </div>
   );
 }
