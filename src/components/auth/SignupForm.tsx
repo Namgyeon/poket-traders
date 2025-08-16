@@ -7,7 +7,6 @@ import PasswordInput from "@/components/ui/Input/PasswordInput";
 import Button from "@/components/ui/Button/Button";
 
 export default function SignupForm() {
-  console.log("리렌더링 체크");
   const { register, handleSubmit } = useForm({
     defaultValues: {
       email: "",
