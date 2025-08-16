@@ -7,6 +7,7 @@ export default function Input({
 }: InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
+      type="text"
       className={clsx(
         "w-full p-2 border-2 border-gray-300 rounded-md",
         className
