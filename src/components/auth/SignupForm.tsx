@@ -16,7 +16,11 @@ export default function SignupForm() {
   return (
     <form className="flex flex-col gap-4">
       <div>
-        <BaseLabel label="Email" />
+        <BaseLabel label="이메일" />
+        <Input />
+      </div>
+      <div>
+        <BaseLabel label="닉네임" />
         <Input />
       </div>
     </form>

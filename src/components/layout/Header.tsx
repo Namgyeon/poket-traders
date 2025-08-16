@@ -8,7 +8,14 @@ export default function Header() {
         href="/"
         className="flex items-center gap-2 hover:bg-gray-200 rounded-md transition-all duration-300"
       >
-        <Image src="/logo.svg" alt="로고 이미지" width={30} height={30} />
+        <Image
+          src="/logo.svg"
+          alt="로고 이미지"
+          width={30}
+          height={30}
+          sizes="30px"
+          priority={true}
+        />
         <p className="text-2xl font-bold">Traders</p>
       </Link>
       <div className="flex items-center gap-4">
