@@ -8,13 +8,15 @@ import { useSignup } from "@/apis/auth/queries";
 import { signupFormSchema } from "@/apis/auth/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({
     resolver: zodResolver(signupFormSchema),
     mode: "onChange",
@@ -35,14 +37,36 @@ export default function SignupForm() {
 
     toast.promise(signupPromise, {
       loading: "Signing up...",
-      success: "회원가입 완료!",
+      success: `회원가입 완료!\n로그인페이지로 이동합니다.`,
       error: (error) => {
-        return `회원가입 실패 ${error.message}`;
+        const getErrorMessage = (errorCode: string) => {
+          switch (errorCode) {
+            case "auth/email-already-in-use":
+              return "이미 사용 중인 이메일입니다.";
+            case "auth/weak-password":
+              return "비밀번호가 너무 간단합니다.";
+            case "auth/invalid-email":
+              return "올바르지 않은 이메일 형식입니다.";
+            case "auth/operation-not-allowed":
+              return "이메일 회원가입이 비활성화되어 있습니다.";
+            case "auth/network-request-failed":
+              return "네트워크 연결을 확인해주세요.";
+            default:
+              return "회원가입 중 오류가 발생했습니다.";
+          }
+        };
+
+        const errorMessage = error?.code
+          ? getErrorMessage(error.code)
+          : error?.message || "알 수 없는 오류가 발생했습니다.";
+
+        return `❌ ${errorMessage}`;
       },
     });
 
     try {
       await signupPromise;
+      router.push("/signin");
     } catch (error) {
       console.error(error);
     }
@@ -95,8 +119,12 @@ export default function SignupForm() {
         />
       </div>
       <div>
-        <Button type="submit" variant="primary" disabled={!isValid}>
-          회원가입
+        <Button
+          type="submit"
+          variant="primary"
+          disabled={!isValid || isSubmitting}
+        >
+          {isSubmitting ? "입력중..." : "회원가입"}
         </Button>
       </div>
     </form>

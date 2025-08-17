@@ -52,7 +52,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             onBlur={handleBlur}
             type={isShowPassword ? "text" : "password"}
             className={clsx(
-              "w-full px-4 py-2 text-lg border-2 border-gray-300 rounded-md",
+              "w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-md",
               className
             )}
             {...props}
