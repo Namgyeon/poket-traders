@@ -8,16 +8,48 @@ interface PasswordInputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   error?: string;
   errorMessage?: string;
+  label?: string;
+  labelId?: string;
 }
 
 const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-  ({ className, error, errorMessage, ...props }, ref) => {
+  (
+    {
+      className,
+      error,
+      errorMessage,
+      label,
+      labelId,
+      onFocus,
+      onBlur,
+      ...props
+    },
+    ref
+  ) => {
     const [isShowPassword, setIsShowPassword] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
+
+    const hasValue = props.value && String(props.value).length > 0;
+
+    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+      setIsFocused(true);
+      onFocus?.(e);
+    };
+
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+      setIsFocused(false);
+      onBlur?.(e);
+    };
+
+    const shouldLabelFloat = isFocused || hasValue;
+
     return (
       <div className="flex flex-col gap-2">
         <div className="relative">
           <input
             ref={ref}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             type={isShowPassword ? "text" : "password"}
             className={clsx(
               "w-full px-4 py-2 text-lg border-2 border-gray-300 rounded-md",
@@ -25,6 +57,17 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             )}
             {...props}
           />
+          <label
+            htmlFor={labelId}
+            className={clsx(
+              "absolute text-gray-500",
+              shouldLabelFloat
+                ? "-top-5 left-0 text-xs transition-all duration-400"
+                : "top-1/2 left-4 -translate-y-1/2 transition-all duration-400"
+            )}
+          >
+            {label}
+          </label>
           <button
             type="button"
             onClick={() => setIsShowPassword(!isShowPassword)}
