@@ -4,8 +4,8 @@ import { forwardRef, InputHTMLAttributes, useState } from "react";
 import clsx from "clsx";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  error?: string;
-  errorMessage?: string;
+  error: boolean;
+  errorMessage: string | undefined;
   label?: string;
   labelId?: string;
 }
