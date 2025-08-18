@@ -1,3 +1,4 @@
+import GoogleSigninButton from "@/components/auth/GoogleSigninButton";
 import SigninForm from "@/components/auth/SigninForm";
 import Link from "next/link";
 
@@ -13,6 +14,9 @@ export default function SignInPage() {
           회원가입
         </Link>
       </p>
+      <div className="w-full max-w-md">
+        <GoogleSigninButton />
+      </div>
     </div>
   );
 }
