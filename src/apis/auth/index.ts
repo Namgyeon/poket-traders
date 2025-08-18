@@ -1,7 +1,11 @@
-import { SignupFormRequest, User } from "@/apis/auth/types";
+import { SigninFormRequest, SignupFormRequest, User } from "@/apis/auth/types";
 import { auth, db } from "@/lib/firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 
 export async function signup({
   email,
@@ -26,4 +30,27 @@ export async function signup({
     nickname,
     createdAt: null,
   };
+}
+
+export async function signin({
+  email,
+  password,
+}: SigninFormRequest): Promise<User> {
+  const cred = await signInWithEmailAndPassword(auth, email, password);
+
+  // firestore에서 사용자 정보 가져오기
+  const userRef = doc(db, "users", cred.user.uid);
+  const userDoc = await getDoc(userRef);
+
+  if (userDoc.exists()) {
+    const userData = userDoc.data();
+    return {
+      uid: cred.user.uid,
+      email: cred.user.email!,
+      nickname: userData.nickname,
+      createdAt: userData.createdAt?.toDate() || null,
+    };
+  } else {
+    throw new Error("사용자 정보를 찾을 수 없습니다.");
+  }
 }

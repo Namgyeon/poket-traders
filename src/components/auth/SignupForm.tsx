@@ -74,59 +74,49 @@ export default function SignupForm() {
 
   return (
     <form className="flex flex-col gap-6" onSubmit={onSubmit}>
-      <div>
-        <Input
-          id="email"
-          label="Email Address"
-          labelId="email"
-          value={watchedValues.email}
-          error={errors.email?.message}
-          errorMessage={errors.email?.message}
-          {...register("email")}
-        />
-      </div>
-      <div>
-        <Input
-          id="nickname"
-          label="Nickname"
-          labelId="nickname"
-          value={watchedValues.nickname}
-          error={errors.nickname?.message}
-          errorMessage={errors.nickname?.message}
-          {...register("nickname")}
-        />
-      </div>
-      <div>
-        <PasswordInput
-          id="password"
-          label="Password"
-          labelId="password"
-          value={watchedValues.password}
-          error={errors.password?.message}
-          errorMessage={errors.password?.message}
-          {...register("password")}
-        />
-      </div>
-      <div>
-        <PasswordInput
-          id="confirmPassword"
-          label="Confirm Password"
-          labelId="confirmPassword"
-          value={watchedValues.confirmPassword}
-          error={errors.confirmPassword?.message}
-          errorMessage={errors.confirmPassword?.message}
-          {...register("confirmPassword")}
-        />
-      </div>
-      <div>
-        <Button
-          type="submit"
-          variant="primary"
-          disabled={!isValid || isSubmitting}
-        >
-          {isSubmitting ? "입력중..." : "회원가입"}
-        </Button>
-      </div>
+      <Input
+        id="email"
+        label="Email Address"
+        labelId="email"
+        value={watchedValues.email}
+        error={!!errors.email}
+        errorMessage={errors.email?.message}
+        {...register("email")}
+      />
+      <Input
+        id="nickname"
+        label="Nickname"
+        labelId="nickname"
+        value={watchedValues.nickname}
+        error={!!errors.nickname}
+        errorMessage={errors.nickname?.message}
+        {...register("nickname")}
+      />
+      <PasswordInput
+        id="password"
+        label="Password"
+        labelId="password"
+        value={watchedValues.password}
+        error={errors.password?.message}
+        errorMessage={errors.password?.message}
+        {...register("password")}
+      />
+      <PasswordInput
+        id="confirmPassword"
+        label="Confirm Password"
+        labelId="confirmPassword"
+        value={watchedValues.confirmPassword}
+        error={errors.confirmPassword?.message}
+        errorMessage={errors.confirmPassword?.message}
+        {...register("confirmPassword")}
+      />
+      <Button
+        type="submit"
+        variant="primary"
+        disabled={!isValid || isSubmitting}
+      >
+        {isSubmitting ? "입력중..." : "회원가입"}
+      </Button>
     </form>
   );
 }
