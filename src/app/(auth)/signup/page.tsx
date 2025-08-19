@@ -1,3 +1,4 @@
+import GoogleSigninButton from "@/components/auth/GoogleSigninButton";
 import SignupForm from "@/components/auth/SignupForm";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,6 +15,9 @@ export default function SignUpPage() {
           로그인
         </Link>
       </p>
+      <div className="w-full max-w-md">
+        <GoogleSigninButton />
+      </div>
     </div>
   );
 }
