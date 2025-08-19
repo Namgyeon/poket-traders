@@ -6,7 +6,7 @@ import eyeOffIcon from "@/assets/Icon/eye-off.svg";
 
 interface PasswordInputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
-  error?: string;
+  error?: boolean;
   errorMessage?: string;
   label?: string;
   labelId?: string;

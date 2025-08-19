@@ -97,7 +97,7 @@ export default function SignupForm() {
         label="Password"
         labelId="password"
         value={watchedValues.password}
-        error={errors.password?.message}
+        error={!!errors.password}
         errorMessage={errors.password?.message}
         {...register("password")}
       />
@@ -106,7 +106,7 @@ export default function SignupForm() {
         label="Confirm Password"
         labelId="confirmPassword"
         value={watchedValues.confirmPassword}
-        error={errors.confirmPassword?.message}
+        error={!!errors.confirmPassword}
         errorMessage={errors.confirmPassword?.message}
         {...register("confirmPassword")}
       />
