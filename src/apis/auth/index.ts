@@ -96,3 +96,24 @@ export async function signinWithGoogle(): Promise<User> {
     };
   }
 }
+
+export async function getUser(): Promise<User> {
+  const user = auth.currentUser;
+
+  if (!user) throw new Error("로그인된 사용자가 없습니다.");
+
+  const userRef = doc(db, "users", user.uid);
+  const userDoc = await getDoc(userRef);
+
+  if (userDoc.exists()) {
+    const userData = userDoc.data();
+    return {
+      uid: user.uid,
+      email: user.email!,
+      nickname: userData.nickname,
+      createdAt: userData.createdAt?.toDate() || null,
+    };
+  } else {
+    throw new Error("사용자 정보를 찾을 수 없습니다.");
+  }
+}
