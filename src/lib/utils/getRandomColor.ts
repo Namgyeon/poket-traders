@@ -1,4 +1,4 @@
-function getRandomColor(str: string) {
+export default function getRandomColor(str: string) {
   const colors = [
     "#FF6B6B", // 빨강
     "#4ECDC4", // 청록
