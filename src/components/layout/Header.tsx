@@ -1,7 +1,13 @@
+"use client";
+
+import { useGetUser } from "@/apis/auth/queries";
 import Image from "next/image";
 import Link from "next/link";
+import Avatar from "@/components/ui/Avatar";
 
 export default function Header() {
+  const { data: user } = useGetUser();
+  console.log(user);
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 border-b border-gray">
       <Link
@@ -18,20 +24,24 @@ export default function Header() {
         />
         <p className="text-2xl font-bold">Traders</p>
       </Link>
-      <div className="flex items-center gap-4">
-        <Link
-          href="/signin"
-          className="text-lg font-bold text-gray-700 cursor-pointer hover:text-sky-500 hover:bg-gray-200 rounded-md p-2 transition-all duration-300"
-        >
-          로그인
-        </Link>
-        <Link
-          href="/signup"
-          className="text-lg font-bold text-gray-700 cursor-pointer hover:text-sky-500 hover:bg-gray-200 rounded-md p-2 transition-all duration-300"
-        >
-          회원가입
-        </Link>
-      </div>
+      {user ? (
+        <Avatar user={user} />
+      ) : (
+        <div className="flex items-center gap-4">
+          <Link
+            href="/signin"
+            className="text-lg font-bold text-gray-700 cursor-pointer hover:text-sky-500 hover:bg-gray-200 rounded-md p-2 transition-all duration-300"
+          >
+            로그인
+          </Link>
+          <Link
+            href="/signup"
+            className="text-lg font-bold text-gray-700 cursor-pointer hover:text-sky-500 hover:bg-gray-200 rounded-md p-2 transition-all duration-300"
+          >
+            회원가입
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
