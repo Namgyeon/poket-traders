@@ -2,6 +2,8 @@ import QueryProvider from "@/providers/query-provider";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "sonner";
+import { ReduxProvider } from "@/providers/redux-provider";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const pretendard = localFont({
   src: [
@@ -23,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="ko" className={pretendard.variable}>
       <body className="font-sans">
-        <QueryProvider>{children}</QueryProvider>
+        <ReduxProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </ReduxProvider>
         <Toaster
           position="bottom-center"
           richColors

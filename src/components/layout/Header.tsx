@@ -1,15 +1,16 @@
 "use client";
 
-import { useGetUser } from "@/apis/auth/queries";
 import Image from "next/image";
 import Link from "next/link";
 import Avatar from "@/components/ui/Avatar";
+import { useAuth } from "@/hooks/useAuth";
+import Skeleton from "react-loading-skeleton";
 
 export default function Header() {
-  const { data: user } = useGetUser();
-  console.log(user);
+  const { user, userLoading } = useAuth();
+
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 border-b border-gray">
+    <div className="fixed top-0 left-0 right-0 h-18 z-50 flex items-center justify-between py-4 px-8 border-b border-gray">
       <Link
         href="/"
         className="flex items-center gap-2 hover:bg-gray-200 rounded-md transition-all duration-300"
@@ -24,7 +25,9 @@ export default function Header() {
         />
         <p className="text-2xl font-bold">Traders</p>
       </Link>
-      {user ? (
+      {userLoading ? (
+        <SkeletonHeader />
+      ) : user ? (
         <Avatar user={user} />
       ) : (
         <div className="flex items-center gap-4">
@@ -42,6 +45,15 @@ export default function Header() {
           </Link>
         </div>
       )}
+    </div>
+  );
+}
+
+function SkeletonHeader() {
+  return (
+    <div className="flex items-center gap-4">
+      <Skeleton circle width={40} height={40} />
+      <Skeleton width={80} height={20} />
     </div>
   );
 }
