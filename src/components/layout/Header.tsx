@@ -5,9 +5,26 @@ import Link from "next/link";
 import Avatar from "@/components/ui/Avatar";
 import { useAuth } from "@/hooks/useAuth";
 import Skeleton from "react-loading-skeleton";
+import UserMenu from "../ui/Dropdown/UserMenu";
+import { logout } from "@/apis/auth";
+import { toast } from "sonner";
 
 export default function Header() {
-  const { user, userLoading } = useAuth();
+  const { user, loading: userLoading } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("로그아웃 되었습니다.");
+    } catch (error) {
+      toast.error("로그아웃 실패");
+    }
+  };
+
+  const options = [
+    { value: "내정보", href: "/mypage" },
+    { value: "로그아웃", onClick: handleLogout },
+  ];
 
   return (
     <div className="fixed top-0 left-0 right-0 h-18 z-50 flex items-center justify-between py-4 px-8 border-b border-gray">
@@ -28,7 +45,9 @@ export default function Header() {
       {userLoading ? (
         <SkeletonHeader />
       ) : user ? (
-        <Avatar user={user} />
+        <>
+          <UserMenu user={user} options={options} />
+        </>
       ) : (
         <div className="flex items-center gap-4">
           <Link

@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
@@ -95,6 +96,10 @@ export async function signinWithGoogle(): Promise<User> {
       createdAt: null,
     };
   }
+}
+
+export async function logout(): Promise<void> {
+  await signOut(auth);
 }
 
 export async function getUser(): Promise<User> {
