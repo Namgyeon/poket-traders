@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+export const userSchema = z.object({
+  uid: z.string(),
+  email: z.string().email(),
+  nickname: z.string(),
+  createdAt: z.date().nullable(),
+});
+export type User = z.infer<typeof userSchema>;
+
 export const signupFormSchema = z
   .object({
     email: z.string().email("이메일 형식이 올바르지 않습니다."),
@@ -18,14 +26,6 @@ export const signupFormSchema = z
     path: ["confirmPassword"],
   });
 export type SignupFormRequest = z.infer<typeof signupFormSchema>;
-
-export const userSchema = z.object({
-  uid: z.string(),
-  email: z.string().email(),
-  nickname: z.string(),
-  createdAt: z.date().nullable(),
-});
-export type User = z.infer<typeof userSchema>;
 
 export const signinFormSchema = z.object({
   email: z.string().email("이메일 형식이 올바르지 않습니다."),
