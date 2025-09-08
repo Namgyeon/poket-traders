@@ -41,7 +41,8 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
   const modalContent = (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="fixed inset-0 bg-black/50 transition-opacity" />
-      <div className="relative w-full p-4 max-w-lg mx-auto bg-white rounded-lg">
+      {/* 모달 내용 */}
+      <div className="relative w-full p-4 max-w-lg mx-auto bg-white rounded-lg space-y-6">
         <div className="flex justify-end items-center">
           <button
             onClick={onClose}

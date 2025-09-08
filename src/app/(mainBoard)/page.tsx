@@ -1,7 +1,8 @@
 "use client";
 
 import { useGetCardTrades } from "@/apis/board/queries";
-import Modal from "@/components/Modal/Modal";
+import CardTradeForm from "@/components/mainBoard/CardTradeForm";
+import Modal from "@/components/ui/Modal/Modal";
 import { useModal } from "@/hooks/useModal";
 
 export default function MainBoardPage() {
@@ -12,7 +13,7 @@ export default function MainBoardPage() {
     <div>
       <button onClick={openModal}>모달 오픈</button>
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <div>모달 내용</div>
+        <CardTradeForm />
       </Modal>
     </div>
   );
