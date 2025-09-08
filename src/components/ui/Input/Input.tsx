@@ -52,17 +52,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             )}
             {...props}
           />
-          <label
-            htmlFor={labelId}
-            className={clsx(
-              "absolute text-gray-500",
-              shouldLabelFloat
-                ? "-top-5 left-0 text-xs transition-all duration-400"
-                : "top-1/2 left-4 -translate-y-1/2 transition-all duration-400"
-            )}
-          >
-            {label}
-          </label>
+          {label && (
+            <label
+              htmlFor={labelId}
+              className={clsx(
+                "absolute text-gray-500",
+                shouldLabelFloat
+                  ? "-top-5 left-0 text-xs transition-all duration-400"
+                  : "top-1/2 left-4 -translate-y-1/2 transition-all duration-400"
+              )}
+            >
+              {label}
+            </label>
+          )}
         </div>
         {error && <p className="text-red-500">{errorMessage}</p>}
       </div>

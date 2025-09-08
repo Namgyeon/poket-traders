@@ -5,14 +5,16 @@ import {
 import Button from "../ui/Button/Button";
 import Input from "../ui/Input/Input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { usePostCardTrade } from "@/apis/board/queries";
 import Textarea from "../ui/Input/TextArea";
+import TagInput from "../ui/Input/TagInput";
 
 export default function CardTradeForm() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<PostCardTradeRequest>({
     resolver: zodResolver(postCardTradeRequestSchema),
@@ -44,6 +46,27 @@ export default function CardTradeForm() {
         errorMessage={errors.content?.message}
         label="내용"
         name="content"
+      />
+      <Controller
+        name="offerCards"
+        control={control}
+        render={({ field }) => (
+          <TagInput
+            tags={field.value || []}
+            onTagsChange={field.onChange}
+            error={!!errors.offerCards}
+            errorMessage={errors.offerCards?.message}
+            label="교환할 카드"
+            name="offerCards"
+          />
+        )}
+      />
+      <TagInput
+        {...register("wantCards")}
+        error={!!errors.wantCards}
+        errorMessage={errors.wantCards?.message}
+        label="원하는 카드"
+        name="wantCards"
       />
       <Button type="submit" variant="primary">
         제출
