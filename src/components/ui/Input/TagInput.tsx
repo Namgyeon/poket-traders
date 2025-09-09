@@ -107,7 +107,7 @@ const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
             onKeyDown={handleKeyDown}
             type="text"
             className={clsx(
-              "w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-md",
+              "w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-md placeholder:pl-20",
               className
             )}
             {...props}
@@ -136,7 +136,7 @@ const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
               <button
                 type="button"
                 onClick={() => removeTag(index)}
-                className="hover:bg-blue-200 rounded-full p-0.5 transition-colors"
+                className="hover:bg-blue-200 cursor-pointer rounded-full p-0.5 transition-colors"
               >
                 <XMarkIcon className="w-3 h-3" />
               </button>

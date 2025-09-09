@@ -58,15 +58,26 @@ export default function CardTradeForm() {
             errorMessage={errors.offerCards?.message}
             label="교환할 카드"
             name="offerCards"
+            maxTags={10}
+            placeholder="카드 이름을 입력하고 엔터를 누르세요."
           />
         )}
       />
-      <TagInput
-        {...register("wantCards")}
-        error={!!errors.wantCards}
-        errorMessage={errors.wantCards?.message}
-        label="원하는 카드"
+      <Controller
         name="wantCards"
+        control={control}
+        render={({ field }) => (
+          <TagInput
+            tags={field.value || []}
+            onTagsChange={field.onChange}
+            error={!!errors.wantCards}
+            errorMessage={errors.wantCards?.message}
+            label="원하는 카드"
+            name="offerCards"
+            maxTags={10}
+            placeholder="카드 이름을 입력하고 엔터를 누르세요."
+          />
+        )}
       />
       <Button type="submit" variant="primary">
         제출
