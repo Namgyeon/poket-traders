@@ -8,6 +8,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage: string | undefined;
   label?: string;
   labelId?: string;
+  placeholder?: string;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -20,6 +21,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       labelId,
       onFocus,
       onBlur,
+      placeholder,
       ...props
     },
     ref
@@ -46,8 +48,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             onFocus={handleFocus}
             onBlur={handleBlur}
             type="text"
+            placeholder={placeholder}
             className={clsx(
-              "w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-md",
+              "w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-md placeholder:pl-20",
               className
             )}
             {...props}

@@ -5,6 +5,7 @@ export const userSchema = z.object({
   email: z.string().email(),
   nickname: z.string(),
   createdAt: z.date().nullable(),
+  friendId: z.string(),
 });
 export type User = z.infer<typeof userSchema>;
 
@@ -12,6 +13,7 @@ export const signupFormSchema = z
   .object({
     email: z.string().email("이메일 형식이 올바르지 않습니다."),
     nickname: z.string().min(2, "닉네임은 2자 이상이어야 합니다."),
+    friendId: z.string().min(1, "친구 ID를 입력해주세요."),
     password: z
       .string()
       .min(8, "비밀번호는 8자 이상이어야 합니다.")

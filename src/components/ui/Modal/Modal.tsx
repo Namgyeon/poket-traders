@@ -3,14 +3,21 @@
 import { ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
+  header?: string;
 }
 
-export default function Modal({ isOpen, onClose, children }: ModalProps) {
+export default function Modal({
+  isOpen,
+  onClose,
+  children,
+  header,
+}: ModalProps) {
   useEffect(() => {
     if (!isOpen) return;
 
@@ -43,7 +50,13 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
       <div className="fixed inset-0 bg-black/50 transition-opacity" />
       {/* 모달 내용 */}
       <div className="relative w-full p-4 max-w-lg mx-auto bg-white rounded-lg space-y-6">
-        <div className="flex justify-end items-center">
+        <div
+          className={clsx(
+            "flex items-center",
+            header ? "justify-between" : "justify-end"
+          )}
+        >
+          {header && <p className="text-lg font-bold">{header}</p>}
           <button
             onClick={onClose}
             className="cursor-pointer hover:bg-gray-200 rounded-lg"
