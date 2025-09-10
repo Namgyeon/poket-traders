@@ -21,7 +21,7 @@ export default function Button({
         // variant별 스타일
         {
           "bg-sky-500 text-white hover:bg-sky-700": variant === "primary",
-          "bg-gray-500 text-white hover:bg-gray-700": variant === "secondary",
+          "bg-gray-400 text-white hover:bg-gray-600": variant === "secondary",
           "bg-red-500 text-white hover:bg-red-700": variant === "destructive",
         },
         {

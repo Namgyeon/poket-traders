@@ -14,6 +14,7 @@ export async function signup({
   email,
   nickname,
   password,
+  friendId,
 }: SignupFormRequest): Promise<User> {
   const cred = await createUserWithEmailAndPassword(auth, email, password);
 
@@ -24,6 +25,7 @@ export async function signup({
     uid: cred.user.uid,
     email,
     nickname,
+    friendId,
     createdAt: serverTimestamp(),
   });
 
@@ -31,6 +33,7 @@ export async function signup({
     uid: cred.user.uid,
     email,
     nickname,
+    friendId,
     createdAt: null,
   };
 }
@@ -51,6 +54,7 @@ export async function signin({
       uid: cred.user.uid,
       email: cred.user.email!,
       nickname: userData.nickname,
+      friendId: userData.friendId,
       createdAt: userData.createdAt?.toDate() || null,
     };
   } else {
@@ -74,6 +78,7 @@ export async function signinWithGoogle(): Promise<User> {
       uid: user.uid,
       email: user.email!,
       nickname: userData.nickname,
+      friendId: userData.friendId,
       createdAt: userData.createdAt?.toDate() || null,
     };
   } else {
@@ -84,6 +89,7 @@ export async function signinWithGoogle(): Promise<User> {
       uid: user.uid,
       email: user.email!,
       nickname,
+      friendId: "",
       createdAt: serverTimestamp(),
       provider: "google", // OAuth 제공업체 표시
       photoURL: user.photoURL, // 프로필 이미지
@@ -93,6 +99,7 @@ export async function signinWithGoogle(): Promise<User> {
       uid: user.uid,
       email: user.email!,
       nickname,
+      friendId: "",
       createdAt: null,
     };
   }
@@ -116,6 +123,7 @@ export async function getUser(): Promise<User> {
       uid: user.uid,
       email: user.email!,
       nickname: userData.nickname,
+      friendId: userData.friendId,
       createdAt: userData.createdAt?.toDate() || null,
     };
   } else {

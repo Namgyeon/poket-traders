@@ -23,6 +23,7 @@ export default function SignupForm() {
     defaultValues: {
       email: "",
       nickname: "",
+      friendId: "",
       password: "",
       confirmPassword: "",
     },
@@ -91,6 +92,16 @@ export default function SignupForm() {
         error={!!errors.nickname}
         errorMessage={errors.nickname?.message}
         {...register("nickname")}
+      />
+      <Input
+        id="friendId"
+        label="Friend ID"
+        labelId="friendId"
+        value={watchedValues.friendId}
+        placeholder="1234-1234-1234-1234"
+        error={!!errors.friendId}
+        errorMessage={errors.friendId?.message}
+        {...register("friendId")}
       />
       <PasswordInput
         id="password"
