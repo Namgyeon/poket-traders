@@ -1,10 +1,14 @@
 import Button from "../ui/Button/Button";
 import { useGetCardTrades } from "@/apis/board/queries";
+import { CardTrade } from "@/apis/board/types";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 
-export default function TradeList() {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useGetCardTrades();
+interface TradeListProps {
+  cardTrades: CardTrade[];
+}
+
+export default function TradeList({ cardTrades }: TradeListProps) {
+  const { fetchNextPage, hasNextPage, isFetchingNextPage } = useGetCardTrades();
 
   const { ref } = useInfiniteScroll({
     hasNextPage,
@@ -12,7 +16,7 @@ export default function TradeList() {
     fetchNextPage,
   });
 
-  const allTrades = data?.pages.flatMap((page) => page.trades) || [];
+  const allTrades = cardTrades;
 
   return (
     <div className="space-y-6">
