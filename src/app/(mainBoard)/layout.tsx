@@ -8,7 +8,9 @@ export default function MainLayout({
   return (
     <div className="min-h-screen">
       <Header />
-      <main className="pt-19">{children}</main>
+      <main className="pt-[80px] w-full max-w-4xl mx-auto px-4">
+        {children}
+      </main>
     </div>
   );
 }
