@@ -2,26 +2,42 @@ import {
   addDoc,
   collection,
   doc,
+  DocumentSnapshot,
   getDoc,
   getDocs,
+  limit,
   orderBy,
   query,
   serverTimestamp,
+  startAfter,
 } from "firebase/firestore";
-import { PostCardTradeRequest } from "./types";
+import { CardTrade, PostCardTradeRequest } from "./types";
 import { db } from "@/lib/firebase";
 
 // 모든 카드 트레이드 게시글 가져오기
-export async function GetCardTrades() {
+export async function GetCardTrades(
+  lastDoc: DocumentSnapshot
+): Promise<{ trades: CardTrade[]; lastDoc: DocumentSnapshot | null }> {
   try {
-    // 최신순으로 정렬된 게시글 가져오기
-    const q = query(collection(db, "card-trade"), orderBy("createdAt", "desc"));
+    let q = query(
+      collection(db, "card-trade"),
+      orderBy("createdAt", "desc"),
+      limit(10)
+    );
+
+    if (lastDoc) {
+      q = query(q, startAfter(lastDoc));
+    }
+
     const querySnapshot = await getDocs(q);
     const trades = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
-    }));
-    return trades;
+    })) as unknown as CardTrade[];
+    return {
+      trades,
+      lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1],
+    };
   } catch (error) {
     console.error("Error getting card trades: ", error);
     throw error;

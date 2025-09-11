@@ -1,10 +1,18 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { GetCardTrade, GetCardTrades, PostCardTrade } from ".";
+import { DocumentSnapshot } from "firebase/firestore";
 
-export const useGetCardTrades = () => {
-  return useQuery({
+export const useGetCardTrades = (lastDoc?: DocumentSnapshot) => {
+  return useInfiniteQuery({
     queryKey: ["card-trades"],
-    queryFn: GetCardTrades,
+    queryFn: ({ pageParam }) => GetCardTrades(pageParam as DocumentSnapshot),
+    getNextPageParam: (lastPage) => lastPage.lastDoc,
+    initialPageParam: undefined as DocumentSnapshot | undefined,
   });
 };
 

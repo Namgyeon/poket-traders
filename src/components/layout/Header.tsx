@@ -27,7 +27,7 @@ export default function Header() {
   ];
 
   return (
-    <div className="fixed top-0 left-0 right-0 h-18 z-50 flex items-center justify-between py-4 px-8 border-b border-gray">
+    <div className="fixed top-0 left-0 right-0 h-18 z-50 flex items-center justify-between py-4 px-8 border-b border-gray bg-white">
       <Link
         href="/"
         className="flex items-center gap-2 hover:bg-gray-200 rounded-md transition-all duration-300"

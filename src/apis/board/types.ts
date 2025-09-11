@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import z from "zod";
 
 export const postCardTradeFormSchema = z.object({
@@ -20,3 +21,17 @@ export const postCardTradeRequestSchema = postCardTradeFormSchema.extend({
   updatedAt: z.string(),
 });
 export type PostCardTradeRequest = z.infer<typeof postCardTradeRequestSchema>;
+
+export const cardTradeSchema = z.object({
+  id: z.string(),
+  authorName: z.string(),
+  uid: z.string(),
+  createdAt: z.instanceof(Timestamp),
+  updatedAt: z.instanceof(Timestamp),
+  title: z.string(),
+  friendId: z.string(),
+  content: z.string(),
+  offerCards: z.array(z.string()),
+  wantCards: z.array(z.string()),
+});
+export type CardTrade = z.infer<typeof cardTradeSchema>;
