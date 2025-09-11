@@ -1,29 +1,16 @@
 import Button from "../ui/Button/Button";
 import { useGetCardTrades } from "@/apis/board/queries";
-import { useCallback, useRef } from "react";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 
 export default function TradeList() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGetCardTrades();
 
-  const observer = useRef<IntersectionObserver>(null);
-
-  const lastTradeElementRef = useCallback(
-    (node: HTMLDivElement) => {
-      if (isFetchingNextPage) return;
-
-      if (observer.current) observer.current.disconnect();
-
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasNextPage) {
-          fetchNextPage();
-        }
-      });
-
-      if (node) observer.current.observe(node);
-    },
-    [isFetchingNextPage, hasNextPage, fetchNextPage]
-  );
+  const { ref } = useInfiniteScroll({
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  });
 
   const allTrades = data?.pages.flatMap((page) => page.trades) || [];
 
@@ -35,7 +22,7 @@ export default function TradeList() {
         return (
           <div
             key={cardTrade.id}
-            ref={isLastElement ? lastTradeElementRef : null}
+            ref={isLastElement ? ref : null}
             className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-blue-200"
           >
             {/* 헤더 */}

@@ -7,7 +7,7 @@ import {
 import { GetCardTrade, GetCardTrades, PostCardTrade } from ".";
 import { DocumentSnapshot } from "firebase/firestore";
 
-export const useGetCardTrades = (lastDoc?: DocumentSnapshot) => {
+export const useGetCardTrades = () => {
   return useInfiniteQuery({
     queryKey: ["card-trades"],
     queryFn: ({ pageParam }) => GetCardTrades(pageParam as DocumentSnapshot),
