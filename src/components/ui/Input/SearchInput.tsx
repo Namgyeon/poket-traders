@@ -20,32 +20,53 @@ export default function SearchInput({
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
+  const performSearch = (searchTerm: string) => {
+    if (searchTerm.trim()) {
+      setIsSearching(true);
+
+      const filteredTrades = allTrades.filter((trade) => {
+        const matchWantCards = trade.wantCards.some((card) =>
+          card.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        return matchWantCards;
+      });
+      onSearchResult(filteredTrades);
+      setIsSearching(false);
+    } else {
+      onSearchResult([]);
+      setIsSearching(false);
+    }
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (searchTerm.trim()) {
-        setIsSearching(true);
-
-        const filteredTrades = allTrades.filter((trade) => {
-          const matchWantCards = trade.wantCards.some((card) =>
-            card.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-          return matchWantCards;
-        });
-        onSearchResult(filteredTrades);
-        setIsSearching(false);
-      } else {
-        onSearchResult([]);
-        setIsSearching(false);
-      }
+      performSearch(searchTerm);
     }, 300);
     return () => clearTimeout(timer);
   }, [searchTerm, allTrades, onSearchResult]);
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      performSearch(searchTerm);
+    }
+  };
+
+  const handleSearchClick = () => {
+    performSearch(searchTerm);
+  };
+
   return (
-    <div className={clsx("relative w-full", className)}>
+    <div
+      className={clsx(
+        "relative w-full border border-gray-300 rounded-md",
+        className
+      )}
+    >
       <input
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyDown={handleKeyPress}
         placeholder={placeholder}
         className="w-full px-4 py-2 placeholder:pl-8"
       />
@@ -53,7 +74,9 @@ export default function SearchInput({
         <MagnifyingGlassIcon className="w-6 h-6 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
       )}
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-20">
-        <Button variant="primary">검색</Button>
+        <Button onClick={handleSearchClick} variant="primary">
+          검색
+        </Button>
       </div>
     </div>
   );
