@@ -33,7 +33,7 @@ export default function SearchInput({
       onSearchResult(filteredTrades);
       setIsSearching(false);
     } else {
-      onSearchResult([]);
+      onSearchResult(allTrades);
       setIsSearching(false);
     }
   };
