@@ -1,10 +1,14 @@
 import Button from "../ui/Button/Button";
 import { useGetCardTrades } from "@/apis/board/queries";
+import { CardTrade } from "@/apis/board/types";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 
-export default function TradeList() {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useGetCardTrades();
+interface TradeListProps {
+  cardTrades: CardTrade[];
+}
+
+export default function TradeList({ cardTrades }: TradeListProps) {
+  const { fetchNextPage, hasNextPage, isFetchingNextPage } = useGetCardTrades();
 
   const { ref } = useInfiniteScroll({
     hasNextPage,
@@ -12,7 +16,7 @@ export default function TradeList() {
     fetchNextPage,
   });
 
-  const allTrades = data?.pages.flatMap((page) => page.trades) || [];
+  const allTrades = cardTrades;
 
   return (
     <div className="space-y-6">
@@ -26,8 +30,8 @@ export default function TradeList() {
             className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-blue-200"
           >
             {/* 헤더 */}
-            <div className="flex items-start justify-between mb-4">
-              <div>
+            <div className="flex flex-col md:flex-row gap-2 items-start justify-between mb-4">
+              <div className="flex flex-col gap-2">
                 <h3 className="text-xl font-bold text-gray-900 mb-1">
                   {cardTrade.title}
                 </h3>
