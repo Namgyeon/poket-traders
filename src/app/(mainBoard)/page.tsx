@@ -4,6 +4,7 @@ import { useGetUser } from "@/apis/auth/queries";
 import { useGetCardTrades } from "@/apis/board/queries";
 import { CardTrade } from "@/apis/board/types";
 import CardTradeForm from "@/components/mainBoard/CardTradeForm";
+import EmptySearchResults from "@/components/mainBoard/EmptySearchResults";
 import TradeList from "@/components/mainBoard/TradeList";
 import Button from "@/components/ui/Button/Button";
 import SearchInput from "@/components/ui/Input/SearchInput";
@@ -31,7 +32,7 @@ export default function MainBoardPage() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         <SearchInput
           placeholder="원하는 카드를 검색"
           className="flex-1"
@@ -44,7 +45,11 @@ export default function MainBoardPage() {
       </div>
 
       <div>
-        <TradeList cardTrades={displayTrades ?? []} />
+        {searchTrades.length > 0 ? (
+          <TradeList cardTrades={displayTrades ?? []} />
+        ) : (
+          <EmptySearchResults />
+        )}
       </div>
 
       <Modal isOpen={isOpen} onClose={closeModal} header="게시글 등록">

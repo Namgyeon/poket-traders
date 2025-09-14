@@ -41,7 +41,7 @@ export default function SearchInput({
   useEffect(() => {
     const timer = setTimeout(() => {
       performSearch(searchTerm);
-    }, 300);
+    }, 500);
     return () => clearTimeout(timer);
   }, [searchTerm, allTrades, onSearchResult]);
 
