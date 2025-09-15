@@ -41,9 +41,12 @@ export const usePostCardTrade = () => {
 };
 
 export const useGetComments = (tradeId: string) => {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: ["comments", tradeId],
-    queryFn: () => GetComments(tradeId),
+    queryFn: ({ pageParam }) =>
+      GetComments(tradeId, pageParam as DocumentSnapshot),
+    getNextPageParam: (lastPage) => lastPage.lastDoc,
+    initialPageParam: undefined as DocumentSnapshot | undefined,
     enabled: !!tradeId,
   });
 };

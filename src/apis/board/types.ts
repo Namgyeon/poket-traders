@@ -47,6 +47,7 @@ export const postCommentRequestSchema = z.object({
 export type PostCommentRequest = z.infer<typeof postCommentRequestSchema>;
 
 export const commentSchema = z.object({
+  id: z.string(),
   content: z.string(),
   authorId: z.string(),
   authorName: z.string(),

@@ -98,18 +98,33 @@ export async function PostComment(tradeId: string, commentData: Comment) {
 }
 
 // 댓글 가져오기
-export async function GetComments(tradeId: string): Promise<Comment[]> {
+export async function GetComments(
+  tradeId: string,
+  lastDoc: DocumentSnapshot
+): Promise<{ comments: Comment[]; lastDoc: DocumentSnapshot | null }> {
   try {
-    const commentsRef = collection(db, "card-trade", tradeId, "comments");
-    const q = query(commentsRef, orderBy("createdAt", "desc"));
-    const querySnapshot = await getDocs(q);
+    let q = query(
+      collection(db, "card-trade", tradeId, "comments"),
+      orderBy("createdAt", "desc"),
+      limit(6)
+    );
 
-    return querySnapshot.docs.map((doc) => ({
+    if (lastDoc) {
+      q = query(q, startAfter(lastDoc));
+    }
+
+    const querySnapshot = await getDocs(q);
+    const comments = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     })) as unknown as Comment[];
+
+    return {
+      comments,
+      lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1],
+    };
   } catch (error) {
-    console.error("Error getting comments: ", error);
+    console.error("Error getting comments infinite: ", error);
     throw error;
   }
 }

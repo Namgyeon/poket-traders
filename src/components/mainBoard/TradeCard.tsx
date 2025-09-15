@@ -1,6 +1,8 @@
 import { useGetComments } from "@/apis/board/queries";
 import { CardTrade } from "@/apis/board/types";
 import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import CommentList from "./CommentList";
 
 interface TradeCardProps {
   cardTrade: CardTrade;
@@ -13,9 +15,17 @@ export default function TradeCard({
   isLastElement,
   ref,
 }: TradeCardProps) {
+  const [isOpenComments, setIsOpenComments] = useState(false);
   const { data: comments } = useGetComments(cardTrade.id);
   console.log(cardTrade.id);
   console.log(comments);
+
+  const handleOpenComments = () => {
+    setIsOpenComments(true);
+  };
+  const handleCloseComments = () => {
+    setIsOpenComments(false);
+  };
 
   return (
     <div
@@ -88,11 +98,22 @@ export default function TradeCard({
 
       {/* 액션 버튼 */}
       <div className="inline-flex items-center border-t border-gray-100">
-        <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 rounded-md p-1">
+        <div
+          className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 rounded-md p-1"
+          onClick={handleOpenComments}
+        >
           <ChatBubbleLeftIcon className="w-6 h-6 text-gray-500" />
-          <p className="text-sm text-gray-500">{comments?.length || 0}</p>
+          <p className="text-sm text-gray-500">
+            {comments?.pages[0].comments.length || 0}
+          </p>
         </div>
       </div>
+
+      {isOpenComments && (
+        <div>
+          <CommentList comments={comments?.pages[0].comments || []} />
+        </div>
+      )}
     </div>
   );
 }
