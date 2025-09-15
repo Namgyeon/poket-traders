@@ -1,19 +1,32 @@
-import { Comment } from "@/apis/board/types";
+import { useGetComments } from "@/apis/board/queries";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
 interface CommentListProps {
-  comments: Comment[];
+  tradeId: string;
+  onCloseComments: () => void;
 }
 
-export default function CommentList({ comments }: CommentListProps) {
+export default function CommentList({
+  tradeId,
+  onCloseComments,
+}: CommentListProps) {
+  const { data, hasNextPage, isFetchingNextPage, fetchNextPage, isLoading } =
+    useGetComments(tradeId);
   const { ref } = useInfiniteScroll({
-    hasNextPage: true,
-    isFetchingNextPage: false,
-    fetchNextPage: () => {},
+    hasNextPage: !!hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
   });
 
+  const comments = data?.pages.flatMap((page) => page.comments) || [];
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       {comments.map((comment) => (
         <div
           key={comment.id}
@@ -27,8 +40,9 @@ export default function CommentList({ comments }: CommentListProps) {
               </p>
             </div>
             <div>
-              <p className="px-2 py-1 test-sm bg-blue-100 rounded-full">
-                친구 ID : {comment.friendId}
+              <p className="px-2 py-1 text-sm font-medium bg-blue-100 rounded-full">
+                <span className="font-semibold">친구 ID</span> :{" "}
+                {comment.friendId}
               </p>
             </div>
           </div>
@@ -38,7 +52,23 @@ export default function CommentList({ comments }: CommentListProps) {
         </div>
       ))}
 
-      <div ref={ref}></div>
+      {/* 무한스크롤 옵저버 */}
+      {hasNextPage && (
+        <div ref={ref}>
+          {isFetchingNextPage ? <div>Loading...</div> : <div>Load More</div>}
+        </div>
+      )}
+
+      <div className="flex mt-4 items-center justify-center">
+        <div
+          className="flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-md p-1 transition-all duration-200"
+          onClick={onCloseComments}
+        >
+          <ChevronUpIcon className="w-6 h-6" />
+        </div>
+      </div>
+
+      {comments.length === 0 && <div>No comments</div>}
     </div>
   );
 }

@@ -111,7 +111,10 @@ export default function TradeCard({
 
       {isOpenComments && (
         <div>
-          <CommentList comments={comments?.pages[0].comments || []} />
+          <CommentList
+            tradeId={cardTrade.id}
+            onCloseComments={handleCloseComments}
+          />
         </div>
       )}
     </div>
