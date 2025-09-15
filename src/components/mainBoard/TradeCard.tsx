@@ -1,5 +1,6 @@
+import { useGetComments } from "@/apis/board/queries";
 import { CardTrade } from "@/apis/board/types";
-import Button from "../ui/Button/Button";
+import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
 
 interface TradeCardProps {
   cardTrade: CardTrade;
@@ -12,11 +13,15 @@ export default function TradeCard({
   isLastElement,
   ref,
 }: TradeCardProps) {
+  const { data: comments } = useGetComments(cardTrade.id);
+  console.log(cardTrade.id);
+  console.log(comments);
+
   return (
     <div
       key={cardTrade.id}
       ref={isLastElement ? ref : null}
-      className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-blue-200"
+      className="flex flex-col gap-2 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-blue-200"
     >
       {/* 헤더 */}
       <div className="flex flex-col md:flex-row gap-2 items-start justify-between mb-4">
@@ -82,8 +87,11 @@ export default function TradeCard({
       </div>
 
       {/* 액션 버튼 */}
-      <div className="flex justify-end mt-4 pt-4 border-t border-gray-100">
-        <Button variant="primary">거래 제안하기</Button>
+      <div className="inline-flex items-center border-t border-gray-100">
+        <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 rounded-md p-1">
+          <ChatBubbleLeftIcon className="w-6 h-6 text-gray-500" />
+          <p className="text-sm text-gray-500">{comments?.length || 0}</p>
+        </div>
       </div>
     </div>
   );

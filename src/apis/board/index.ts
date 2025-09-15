@@ -11,7 +11,7 @@ import {
   serverTimestamp,
   startAfter,
 } from "firebase/firestore";
-import { CardTrade, PostCardTradeRequest } from "./types";
+import { CardTrade, Comment, PostCardTradeRequest } from "./types";
 import { db } from "@/lib/firebase";
 
 // 모든 카드 트레이드 게시글 가져오기
@@ -77,6 +77,39 @@ export async function PostCardTrade(data: PostCardTradeRequest) {
     return { success: true, id: docRef.id };
   } catch (error) {
     console.error("Error adding document: ", error);
+    throw error;
+  }
+}
+
+// 댓글 작성
+export async function PostComment(tradeId: string, commentData: Comment) {
+  try {
+    const commentsRef = collection(db, "card-trade", tradeId, "comments");
+    const docRef = await addDoc(commentsRef, {
+      ...commentData,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error("Error adding comment: ", error);
+    throw error;
+  }
+}
+
+// 댓글 가져오기
+export async function GetComments(tradeId: string): Promise<Comment[]> {
+  try {
+    const commentsRef = collection(db, "card-trade", tradeId, "comments");
+    const q = query(commentsRef, orderBy("createdAt", "desc"));
+    const querySnapshot = await getDocs(q);
+
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as unknown as Comment[];
+  } catch (error) {
+    console.error("Error getting comments: ", error);
     throw error;
   }
 }

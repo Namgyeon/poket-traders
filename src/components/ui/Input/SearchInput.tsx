@@ -43,7 +43,7 @@ export default function SearchInput({
       performSearch(searchTerm);
     }, 500);
     return () => clearTimeout(timer);
-  }, [searchTerm, allTrades, onSearchResult]);
+  }, [searchTerm]);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
