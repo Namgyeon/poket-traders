@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetUser } from "@/apis/auth/queries";
-import { useGetCardTrades } from "@/apis/board/queries";
+import { useGetCardTrades, useGetComments } from "@/apis/board/queries";
 import { CardTrade } from "@/apis/board/types";
 import CardTradeForm from "@/components/mainBoard/CardTradeForm";
 import EmptySearchResults from "@/components/mainBoard/EmptySearchResults";
@@ -10,7 +10,7 @@ import Button from "@/components/ui/Button/Button";
 import SearchInput from "@/components/ui/Input/SearchInput";
 import Modal from "@/components/ui/Modal/Modal";
 import { useModal } from "@/hooks/useModal";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export default function MainBoardPage() {
   const [searchTrades, setSearchTrades] = useState<CardTrade[]>([]);
@@ -18,17 +18,21 @@ export default function MainBoardPage() {
 
   const { openModal, closeModal, isOpen } = useModal();
   const { data: user } = useGetUser();
-  const { data: trades } = useGetCardTrades();
+  const {
+    data: trades,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetCardTrades();
 
-  const allTrades = trades?.pages.flatMap((page) => page.trades);
-  console.log(allTrades);
+  const allTrades = useMemo(() => {
+    return trades?.pages.flatMap((page) => page.trades) ?? [];
+  }, [trades]);
 
   const handleSearchResult = (trades: CardTrade[]) => {
     setSearchTrades(trades);
     setIsSearching(trades.length > 0);
   };
-
-  const displayTrades = isSearching ? searchTrades : allTrades;
 
   return (
     <div className="space-y-4">
@@ -45,10 +49,20 @@ export default function MainBoardPage() {
       </div>
 
       <div>
-        {searchTrades.length > 0 ? (
-          <TradeList cardTrades={displayTrades ?? []} />
+        {isSearching ? (
+          <TradeList
+            cardTrades={searchTrades}
+            fetchNextPage={() => {}}
+            hasNextPage={false}
+            isFetchingNextPage={false}
+          />
         ) : (
-          <EmptySearchResults />
+          <TradeList
+            cardTrades={allTrades ?? []}
+            fetchNextPage={fetchNextPage}
+            hasNextPage={hasNextPage}
+            isFetchingNextPage={isFetchingNextPage}
+          />
         )}
       </div>
 

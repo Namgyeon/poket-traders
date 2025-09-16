@@ -4,8 +4,15 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { GetCardTrade, GetCardTrades, PostCardTrade } from ".";
+import {
+  GetCardTrade,
+  GetCardTrades,
+  GetComments,
+  PostCardTrade,
+  PostComment,
+} from "@/apis/board";
 import { DocumentSnapshot } from "firebase/firestore";
+import { Comment, PostCommentRequest } from "./types";
 
 export const useGetCardTrades = () => {
   return useInfiniteQuery({
@@ -30,6 +37,34 @@ export const usePostCardTrade = () => {
     mutationFn: PostCardTrade,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["card-trades"] });
+    },
+  });
+};
+
+export const useGetComments = (tradeId: string) => {
+  return useInfiniteQuery({
+    queryKey: ["comments", tradeId],
+    queryFn: ({ pageParam }) =>
+      GetComments(tradeId, pageParam as DocumentSnapshot),
+    getNextPageParam: (lastPage) => lastPage.lastDoc,
+    initialPageParam: undefined as DocumentSnapshot | undefined,
+    enabled: !!tradeId,
+  });
+};
+
+export const usePostComment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      tradeId,
+      commentData,
+    }: {
+      tradeId: string;
+      commentData: PostCommentRequest;
+    }) => PostComment(tradeId, commentData),
+    onSuccess: (_, { tradeId }) => {
+      queryClient.invalidateQueries({ queryKey: ["comments", tradeId] });
     },
   });
 };

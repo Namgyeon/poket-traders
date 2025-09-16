@@ -8,6 +8,7 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   errorMessage: string | undefined;
   label?: string;
   labelId?: string;
+  rows?: number;
 }
 
 const Textarea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
@@ -20,6 +21,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       labelId,
       onFocus,
       onBlur,
+      rows,
       ...props
     },
     ref
@@ -45,7 +47,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
             ref={ref}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            rows={3}
+            rows={rows}
             className={clsx(
               "w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-md",
               className

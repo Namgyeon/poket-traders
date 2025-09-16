@@ -1,15 +1,20 @@
-import { useGetCardTrades } from "@/apis/board/queries";
 import { CardTrade } from "@/apis/board/types";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import TradeCard from "./TradeCard";
 
 interface TradeListProps {
   cardTrades: CardTrade[];
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
 }
 
-export default function TradeList({ cardTrades }: TradeListProps) {
-  const { fetchNextPage, hasNextPage, isFetchingNextPage } = useGetCardTrades();
-
+export default function TradeList({
+  cardTrades,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+}: TradeListProps) {
   const { ref } = useInfiniteScroll({
     hasNextPage,
     isFetchingNextPage,

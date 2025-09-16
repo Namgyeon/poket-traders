@@ -35,3 +35,21 @@ export const cardTradeSchema = z.object({
   wantCards: z.array(z.string()),
 });
 export type CardTrade = z.infer<typeof cardTradeSchema>;
+
+export const postCommentRequestSchema = z.object({
+  content: z.string(),
+  friendId: z.string(),
+  authorId: z.string(),
+  authorName: z.string(),
+});
+export type PostCommentRequest = z.infer<typeof postCommentRequestSchema>;
+
+export const commentSchema = z.object({
+  id: z.string(),
+  content: z.string(),
+  authorId: z.string(),
+  authorName: z.string(),
+  createdAt: z.instanceof(Timestamp),
+  friendId: z.string(),
+});
+export type Comment = z.infer<typeof commentSchema>;
