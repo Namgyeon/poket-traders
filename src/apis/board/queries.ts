@@ -12,6 +12,7 @@ import {
   PostComment,
 } from "@/apis/board";
 import { DocumentSnapshot } from "firebase/firestore";
+import { Comment, PostCommentRequest } from "./types";
 
 export const useGetCardTrades = () => {
   return useInfiniteQuery({
@@ -60,7 +61,7 @@ export const usePostComment = () => {
       commentData,
     }: {
       tradeId: string;
-      commentData: any;
+      commentData: PostCommentRequest;
     }) => PostComment(tradeId, commentData),
     onSuccess: (_, { tradeId }) => {
       queryClient.invalidateQueries({ queryKey: ["comments", tradeId] });

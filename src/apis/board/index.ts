@@ -11,7 +11,12 @@ import {
   serverTimestamp,
   startAfter,
 } from "firebase/firestore";
-import { CardTrade, Comment, PostCardTradeRequest } from "./types";
+import {
+  CardTrade,
+  Comment,
+  PostCardTradeRequest,
+  PostCommentRequest,
+} from "./types";
 import { db } from "@/lib/firebase";
 
 // 모든 카드 트레이드 게시글 가져오기
@@ -82,7 +87,10 @@ export async function PostCardTrade(data: PostCardTradeRequest) {
 }
 
 // 댓글 작성
-export async function PostComment(tradeId: string, commentData: any) {
+export async function PostComment(
+  tradeId: string,
+  commentData: PostCommentRequest
+) {
   try {
     const commentsRef = collection(db, "card-trade", tradeId, "comments");
     const docRef = await addDoc(commentsRef, {

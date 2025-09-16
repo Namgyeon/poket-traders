@@ -29,6 +29,8 @@ export default function CommentForm({ tradeId }: CommentFormProps) {
     defaultValues: {
       content: "",
       friendId: user?.friendId,
+      authorId: "",
+      authorName: "",
     },
   });
 

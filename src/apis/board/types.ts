@@ -39,6 +39,8 @@ export type CardTrade = z.infer<typeof cardTradeSchema>;
 export const postCommentRequestSchema = z.object({
   content: z.string(),
   friendId: z.string(),
+  authorId: z.string(),
+  authorName: z.string(),
 });
 export type PostCommentRequest = z.infer<typeof postCommentRequestSchema>;
 
