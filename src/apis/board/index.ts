@@ -82,13 +82,12 @@ export async function PostCardTrade(data: PostCardTradeRequest) {
 }
 
 // 댓글 작성
-export async function PostComment(tradeId: string, commentData: Comment) {
+export async function PostComment(tradeId: string, commentData: any) {
   try {
     const commentsRef = collection(db, "card-trade", tradeId, "comments");
     const docRef = await addDoc(commentsRef, {
       ...commentData,
       createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
     });
     return docRef.id;
   } catch (error) {
@@ -105,7 +104,7 @@ export async function GetComments(
   try {
     let q = query(
       collection(db, "card-trade", tradeId, "comments"),
-      orderBy("createdAt", "desc"),
+      orderBy("createdAt", "asc"),
       limit(6)
     );
 

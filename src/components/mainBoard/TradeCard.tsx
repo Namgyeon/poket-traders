@@ -1,8 +1,9 @@
 import { useGetComments } from "@/apis/board/queries";
 import { CardTrade } from "@/apis/board/types";
-import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
+import { ChatBubbleLeftIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import CommentList from "./CommentList";
+import CommentForm from "./CommentForm";
 
 interface TradeCardProps {
   cardTrade: CardTrade;
@@ -96,7 +97,7 @@ export default function TradeCard({
         </div>
       </div>
 
-      {/* 액션 버튼 */}
+      {/* 댓글 버튼 */}
       <div className="inline-flex items-center border-t border-gray-100">
         <div
           className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 rounded-md p-1"
@@ -110,11 +111,17 @@ export default function TradeCard({
       </div>
 
       {isOpenComments && (
-        <div>
-          <CommentList
-            tradeId={cardTrade.id}
-            onCloseComments={handleCloseComments}
-          />
+        <div className="flex flex-col gap-2">
+          <CommentList tradeId={cardTrade.id} />
+          <CommentForm tradeId={cardTrade.id} />
+          <div className="flex mt-4 items-center justify-center">
+            <div
+              className="flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-md p-1 transition-all duration-200"
+              onClick={handleCloseComments}
+            >
+              <ChevronUpIcon className="w-6 h-6" />
+            </div>
+          </div>
         </div>
       )}
     </div>

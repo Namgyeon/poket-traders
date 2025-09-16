@@ -1,16 +1,11 @@
 import { useGetComments } from "@/apis/board/queries";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
 interface CommentListProps {
   tradeId: string;
-  onCloseComments: () => void;
 }
 
-export default function CommentList({
-  tradeId,
-  onCloseComments,
-}: CommentListProps) {
+export default function CommentList({ tradeId }: CommentListProps) {
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage, isLoading } =
     useGetComments(tradeId);
   const { ref } = useInfiniteScroll({
@@ -58,15 +53,6 @@ export default function CommentList({
           {isFetchingNextPage ? <div>Loading...</div> : <div>Load More</div>}
         </div>
       )}
-
-      <div className="flex mt-4 items-center justify-center">
-        <div
-          className="flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-md p-1 transition-all duration-200"
-          onClick={onCloseComments}
-        >
-          <ChevronUpIcon className="w-6 h-6" />
-        </div>
-      </div>
 
       {comments.length === 0 && <div>No comments</div>}
     </div>
