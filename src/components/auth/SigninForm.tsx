@@ -8,6 +8,7 @@ import { SigninFormRequest, signinFormSchema } from "@/apis/auth/types";
 import { signin } from "@/apis/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { getAuthErrorMessage } from "@/lib/utils/errorMessage";
 
 export default function SigninForm() {
   const {
@@ -34,28 +35,10 @@ export default function SigninForm() {
       loading: "로그인 중입니다... ⏳",
       success: (userData) => `🎉 환영합니다, ${userData.nickname}님!`,
       error: (error) => {
-        const getErrorMessage = (errorCode: string) => {
-          switch (errorCode) {
-            case "auth/user-not-found":
-              return "등록되지 않은 이메일입니다.";
-            case "auth/wrong-password":
-              return "잘못된 비밀번호입니다.";
-            case "auth/invalid-email":
-              return "올바르지 않은 이메일 형식입니다.";
-            case "auth/invalid-credential":
-              return "이메일 또는 비밀번호가 올바르지 않습니다.";
-            case "auth/too-many-requests":
-              return "너무 많은 시도로 일시적으로 차단되었습니다.";
-            default:
-              return "로그인 중 오류가 발생했습니다.";
-          }
-        };
-
-        const errorMessage = error?.code
-          ? getErrorMessage(error.code)
-          : error?.message || "알 수 없는 오류가 발생했습니다.";
-
-        return `❌ ${errorMessage}`;
+        console.error("Signin failed:", error);
+        console.error("Error code:", error.code);
+        console.error("Error message:", error.message);
+        return getAuthErrorMessage(error.code);
       },
     });
 
