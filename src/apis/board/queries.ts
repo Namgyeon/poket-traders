@@ -12,7 +12,7 @@ import {
   PostComment,
 } from "@/apis/board";
 import { DocumentSnapshot } from "firebase/firestore";
-import { Comment, PostCommentRequest } from "./types";
+import { PostCommentRequest } from "./types";
 
 export const useGetCardTrades = () => {
   return useInfiniteQuery({

@@ -1,15 +1,15 @@
 "use client";
 
 import { useGetUser } from "@/apis/auth/queries";
-import { useGetCardTrades, useGetComments } from "@/apis/board/queries";
+import { useGetCardTrades } from "@/apis/board/queries";
 import { CardTrade } from "@/apis/board/types";
 import CardTradeForm from "@/components/mainBoard/CardTradeForm";
-import EmptySearchResults from "@/components/mainBoard/EmptySearchResults";
 import TradeList from "@/components/mainBoard/TradeList";
 import Button from "@/components/ui/Button/Button";
 import SearchInput from "@/components/ui/Input/SearchInput";
 import Modal from "@/components/ui/Modal/Modal";
 import { useModal } from "@/hooks/useModal";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 export default function MainBoardPage() {
@@ -24,6 +24,7 @@ export default function MainBoardPage() {
     hasNextPage,
     isFetchingNextPage,
   } = useGetCardTrades();
+  const router = useRouter();
 
   const allTrades = useMemo(() => {
     return trades?.pages.flatMap((page) => page.trades) ?? [];
@@ -66,11 +67,27 @@ export default function MainBoardPage() {
         )}
       </div>
 
-      <Modal isOpen={isOpen} onClose={closeModal} header="게시글 등록">
+      <Modal
+        isOpen={isOpen}
+        onClose={closeModal}
+        header={user ? "게시글 등록" : ""}
+      >
         {user ? (
           <CardTradeForm user={user} onClose={closeModal} />
         ) : (
-          <div>로그인 후 이용해주세요.</div>
+          <div className="p-6 text-center">
+            <p className="text-gray-600 mb-4">로그인이 필요합니다.</p>
+            <Button
+              onClick={() => {
+                closeModal();
+                router.push("/signin");
+              }}
+              variant="primary"
+              type="button"
+            >
+              로그인하러 가기
+            </Button>
+          </div>
         )}
       </Modal>
     </div>

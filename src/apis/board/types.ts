@@ -3,7 +3,10 @@ import z from "zod";
 
 export const postCardTradeFormSchema = z.object({
   title: z.string().min(1, { message: "제목을 입력해주세요." }),
-  friendId: z.string().min(1, { message: "친구 ID를 입력해주세요." }),
+  friendId: z
+    .string()
+    .min(16, { message: "친구 ID는 16자입니다." })
+    .max(16, { message: "친구 ID는 16자입니다." }),
   content: z.string().min(1, { message: "내용을 입력해주세요." }),
   offerCards: z
     .array(z.string())

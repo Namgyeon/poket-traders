@@ -9,6 +9,7 @@ import { signupFormSchema } from "@/apis/auth/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { getAuthErrorMessage } from "@/lib/utils/errorMessage";
 
 export default function SignupForm() {
   const router = useRouter();
@@ -40,28 +41,7 @@ export default function SignupForm() {
       loading: "Signing up...",
       success: `회원가입 완료!\n로그인페이지로 이동합니다.`,
       error: (error) => {
-        const getErrorMessage = (errorCode: string) => {
-          switch (errorCode) {
-            case "auth/email-already-in-use":
-              return "이미 사용 중인 이메일입니다.";
-            case "auth/weak-password":
-              return "비밀번호가 너무 간단합니다.";
-            case "auth/invalid-email":
-              return "올바르지 않은 이메일 형식입니다.";
-            case "auth/operation-not-allowed":
-              return "이메일 회원가입이 비활성화되어 있습니다.";
-            case "auth/network-request-failed":
-              return "네트워크 연결을 확인해주세요.";
-            default:
-              return "회원가입 중 오류가 발생했습니다.";
-          }
-        };
-
-        const errorMessage = error?.code
-          ? getErrorMessage(error.code)
-          : error?.message || "알 수 없는 오류가 발생했습니다.";
-
-        return `❌ ${errorMessage}`;
+        return getAuthErrorMessage(error.code);
       },
     });
 
@@ -98,7 +78,7 @@ export default function SignupForm() {
         label="Friend ID"
         labelId="friendId"
         value={watchedValues.friendId}
-        placeholder="1234-1234-1234-1234"
+        placeholder="-없이 입력해주세요. ex) 1234123412341234"
         error={!!errors.friendId}
         errorMessage={errors.friendId?.message}
         {...register("friendId")}
