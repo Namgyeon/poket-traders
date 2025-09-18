@@ -2,7 +2,7 @@ import { InputHTMLAttributes, useEffect, useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Button from "@/components/ui/Button/Button";
-import { CardTrade } from "@/apis/board/types";
+import { CardTrade } from "@/apis/trades/types";
 
 interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder: string;

@@ -10,7 +10,7 @@ import {
   GetComments,
   PostCardTrade,
   PostComment,
-} from "@/apis/board";
+} from "@/apis/trades";
 import { DocumentSnapshot } from "firebase/firestore";
 import { PostCommentRequest } from "./types";
 

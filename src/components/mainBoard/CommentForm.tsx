@@ -5,10 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   postCommentRequestSchema,
   PostCommentRequest,
-} from "@/apis/board/types";
+} from "@/apis/trades/types";
 import { useGetUser } from "@/apis/auth/queries";
 import Button from "@/components/ui/Button/Button";
-import { usePostComment } from "@/apis/board/queries";
+import { usePostComment } from "@/apis/trades/queries";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/utils/errorMessage";
 

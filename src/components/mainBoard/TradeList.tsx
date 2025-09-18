@@ -1,4 +1,4 @@
-import { CardTrade } from "@/apis/board/types";
+import { CardTrade } from "@/apis/trades/types";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import TradeCard from "./TradeCard";
 

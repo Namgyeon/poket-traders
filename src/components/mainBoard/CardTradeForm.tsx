@@ -1,9 +1,12 @@
-import { PostCardTradeForm, postCardTradeFormSchema } from "@/apis/board/types";
+import {
+  PostCardTradeForm,
+  postCardTradeFormSchema,
+} from "@/apis/trades/types";
 import Button from "../ui/Button/Button";
 import Input from "../ui/Input/Input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { usePostCardTrade } from "@/apis/board/queries";
+import { usePostCardTrade } from "@/apis/trades/queries";
 import Textarea from "../ui/Input/TextArea";
 import TagInput from "../ui/Input/TagInput";
 import { User } from "@/apis/auth/types";
