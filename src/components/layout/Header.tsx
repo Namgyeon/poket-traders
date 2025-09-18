@@ -2,10 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import Avatar from "@/components/ui/Avatar";
 import { useAuth } from "@/hooks/useAuth";
 import Skeleton from "react-loading-skeleton";
-import UserMenu from "../ui/Dropdown/UserMenu";
+import UserMenu from "@/components/ui/Dropdown/UserMenu";
 import { logout } from "@/apis/auth";
 import { toast } from "sonner";
 

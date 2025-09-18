@@ -25,11 +25,11 @@ export default function CommentList({ tradeId }: CommentListProps) {
       {comments.map((comment) => (
         <div
           key={comment.id}
-          className="flex flex-col gap-2 border border-gray-200 rounded-md px-4 py-2"
+          className="flex flex-col gap-2 border border-gray-500 rounded-md px-4 py-2"
         >
           <div className="flex items-center justify-between">
             <div className="flex gap-4 items-center">
-              <p>{comment.authorName}</p>
+              <p className="text-lg font-semibold">{comment.authorName}</p>
               <p className="text-sm text-gray-500">
                 {comment.createdAt.toDate().toLocaleString()}
               </p>

@@ -55,10 +55,6 @@ export default function CardTradeForm({ user, onClose }: CardTradeFormProps) {
     }
   };
 
-  if (!user) {
-    return <div>로그인 후 이용해주세요.</div>;
-  }
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <Input

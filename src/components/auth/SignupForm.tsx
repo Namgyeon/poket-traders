@@ -78,7 +78,7 @@ export default function SignupForm() {
         label="Friend ID"
         labelId="friendId"
         value={watchedValues.friendId}
-        placeholder="1234-1234-1234-1234"
+        placeholder="-없이 입력해주세요. ex) 1234123412341234"
         error={!!errors.friendId}
         errorMessage={errors.friendId?.message}
         {...register("friendId")}

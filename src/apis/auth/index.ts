@@ -16,49 +16,59 @@ export async function signup({
   password,
   friendId,
 }: SignupFormRequest): Promise<User> {
-  const cred = await createUserWithEmailAndPassword(auth, email, password);
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
 
-  await updateProfile(cred.user, { displayName: nickname });
+    await updateProfile(cred.user, { displayName: nickname });
 
-  const userRef = doc(db, "users", cred.user.uid);
-  await setDoc(userRef, {
-    uid: cred.user.uid,
-    email,
-    nickname,
-    friendId,
-    createdAt: serverTimestamp(),
-  });
+    const userRef = doc(db, "users", cred.user.uid);
+    await setDoc(userRef, {
+      uid: cred.user.uid,
+      email,
+      nickname,
+      friendId,
+      createdAt: serverTimestamp(),
+    });
 
-  return {
-    uid: cred.user.uid,
-    email,
-    nickname,
-    friendId,
-    createdAt: null,
-  };
+    return {
+      uid: cred.user.uid,
+      email,
+      nickname,
+      friendId,
+      createdAt: null,
+    };
+  } catch (error) {
+    console.error("회원가입 오류:", error);
+    throw error;
+  }
 }
 
 export async function signin({
   email,
   password,
 }: SigninFormRequest): Promise<User> {
-  const cred = await signInWithEmailAndPassword(auth, email, password);
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, password);
 
-  // firestore에서 사용자 정보 가져오기
-  const userRef = doc(db, "users", cred.user.uid);
-  const userDoc = await getDoc(userRef);
+    // firestore에서 사용자 정보 가져오기
+    const userRef = doc(db, "users", cred.user.uid);
+    const userDoc = await getDoc(userRef);
 
-  if (userDoc.exists()) {
-    const userData = userDoc.data();
-    return {
-      uid: cred.user.uid,
-      email: cred.user.email!,
-      nickname: userData.nickname,
-      friendId: userData.friendId,
-      createdAt: userData.createdAt?.toDate() || null,
-    };
-  } else {
-    throw new Error("사용자 정보를 찾을 수 없습니다.");
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return {
+        uid: cred.user.uid,
+        email: cred.user.email!,
+        nickname: userData.nickname,
+        friendId: userData.friendId,
+        createdAt: userData.createdAt?.toDate() || null,
+      };
+    } else {
+      throw new Error("사용자 정보를 찾을 수 없습니다.");
+    }
+  } catch (error) {
+    console.error("로그인 오류:", error);
+    throw error;
   }
 }
 
@@ -110,23 +120,28 @@ export async function logout(): Promise<void> {
 }
 
 export async function getUser(): Promise<User> {
-  const user = auth.currentUser;
+  try {
+    const user = auth.currentUser;
 
-  if (!user) throw new Error("로그인된 사용자가 없습니다.");
+    if (!user) throw new Error("로그인된 사용자가 없습니다.");
 
-  const userRef = doc(db, "users", user.uid);
-  const userDoc = await getDoc(userRef);
+    const userRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userRef);
 
-  if (userDoc.exists()) {
-    const userData = userDoc.data();
-    return {
-      uid: user.uid,
-      email: user.email!,
-      nickname: userData.nickname,
-      friendId: userData.friendId,
-      createdAt: userData.createdAt?.toDate() || null,
-    };
-  } else {
-    throw new Error("사용자 정보를 찾을 수 없습니다.");
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return {
+        uid: user.uid,
+        email: user.email!,
+        nickname: userData.nickname,
+        friendId: userData.friendId,
+        createdAt: userData.createdAt?.toDate() || null,
+      };
+    } else {
+      throw new Error("사용자 정보를 찾을 수 없습니다.");
+    }
+  } catch (error) {
+    console.error("사용자 정보 조회 오류:", error);
+    throw error;
   }
 }

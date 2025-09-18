@@ -9,6 +9,8 @@ import {
 import { useGetUser } from "@/apis/auth/queries";
 import Button from "@/components/ui/Button/Button";
 import { usePostComment } from "@/apis/board/queries";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/utils/errorMessage";
 
 interface CommentFormProps {
   tradeId: string;
@@ -17,7 +19,6 @@ interface CommentFormProps {
 export default function CommentForm({ tradeId }: CommentFormProps) {
   const { data: user } = useGetUser();
   const { mutateAsync: postComment } = usePostComment();
-  console.log("유저정보:", user);
 
   const {
     register,
@@ -36,7 +37,7 @@ export default function CommentForm({ tradeId }: CommentFormProps) {
 
   const onSubmit = handleSubmit(async (data) => {
     if (!user) {
-      alert("로그인 후 이용해주세요.");
+      toast.error("로그인 후 이용해주세요.");
       return;
     }
     try {
@@ -48,9 +49,11 @@ export default function CommentForm({ tradeId }: CommentFormProps) {
           authorName: user?.nickname || user?.email,
         },
       });
+      toast.success("댓글 작성 완료");
       reset();
     } catch (error) {
-      console.error(error);
+      console.error("Comment post error:", error);
+      toast.error(getErrorMessage(error));
     }
   });
 

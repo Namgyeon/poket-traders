@@ -44,7 +44,7 @@ export async function GetCardTrades(
       lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1],
     };
   } catch (error) {
-    console.error("Error getting card trades: ", error);
+    console.error("트레이드 카드 리스트 가져오기 오류: ", error);
     throw error;
   }
 }
@@ -64,7 +64,7 @@ export async function GetCardTrade(id: string) {
       throw new Error("No such document");
     }
   } catch (error) {
-    console.error("Error getting card trade: ", error);
+    console.error("트레이드 카드 가져오기: ", error);
     throw error;
   }
 }
@@ -81,7 +81,7 @@ export async function PostCardTrade(data: PostCardTradeRequest) {
     console.log("Document written with ID: ", docRef.id);
     return { success: true, id: docRef.id };
   } catch (error) {
-    console.error("Error adding document: ", error);
+    console.error("트레이드 카드 작성 오류: ", error);
     throw error;
   }
 }
@@ -99,7 +99,7 @@ export async function PostComment(
     });
     return docRef.id;
   } catch (error) {
-    console.error("Error adding comment: ", error);
+    console.error("댓글 작성 오류: ", error);
     throw error;
   }
 }
@@ -131,7 +131,7 @@ export async function GetComments(
       lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1],
     };
   } catch (error) {
-    console.error("Error getting comments infinite: ", error);
+    console.error("댓글 가져오기 오류: ", error);
     throw error;
   }
 }
