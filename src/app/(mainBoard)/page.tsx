@@ -1,8 +1,8 @@
 "use client";
 
 import { useGetUser } from "@/apis/auth/queries";
-import { useGetCardTrades } from "@/apis/board/queries";
-import { CardTrade } from "@/apis/board/types";
+import { useGetCardTrades } from "@/apis/trades/queries";
+import { CardTrade } from "@/apis/trades/types";
 import CardTradeForm from "@/components/mainBoard/CardTradeForm";
 import TradeList from "@/components/mainBoard/TradeList";
 import Button from "@/components/ui/Button/Button";

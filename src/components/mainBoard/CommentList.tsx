@@ -1,4 +1,4 @@
-import { useGetComments } from "@/apis/board/queries";
+import { useGetComments } from "@/apis/trades/queries";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 
 interface CommentListProps {

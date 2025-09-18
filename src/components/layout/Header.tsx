@@ -7,9 +7,11 @@ import Skeleton from "react-loading-skeleton";
 import UserMenu from "@/components/ui/Dropdown/UserMenu";
 import { logout } from "@/apis/auth";
 import { toast } from "sonner";
+import { useGetUser } from "@/apis/auth/queries";
 
 export default function Header() {
-  const { user, loading: userLoading } = useAuth();
+  const { user: isAuthenticated, loading: userLoading } = useAuth();
+  const { data: user } = useGetUser();
 
   const handleLogout = async () => {
     try {
@@ -43,7 +45,7 @@ export default function Header() {
       </Link>
       {userLoading ? (
         <SkeletonHeader />
-      ) : user ? (
+      ) : isAuthenticated && user ? (
         <>
           <UserMenu user={user} options={options} />
         </>

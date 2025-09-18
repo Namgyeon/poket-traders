@@ -1,5 +1,5 @@
-import { useGetComments } from "@/apis/board/queries";
-import { CardTrade } from "@/apis/board/types";
+import { useGetComments } from "@/apis/trades/queries";
+import { CardTrade } from "@/apis/trades/types";
 import { ChatBubbleLeftIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import CommentList from "./CommentList";
