@@ -10,6 +10,7 @@ import {
   query,
   serverTimestamp,
   startAfter,
+  writeBatch,
 } from "firebase/firestore";
 import {
   CardTrade,
@@ -92,12 +93,33 @@ export async function PostComment(
   commentData: PostCommentRequest
 ) {
   try {
+    const batch = writeBatch(db);
+
     const commentsRef = collection(db, "card-trade", tradeId, "comments");
-    const docRef = await addDoc(commentsRef, {
+    const commentDocRef = doc(commentsRef);
+
+    const userCommentsRef = collection(
+      db,
+      "users",
+      commentData.authorId,
+      "comments"
+    );
+    const userCommentDocRef = doc(userCommentsRef);
+
+    const commentDataWithTimestamp = {
       ...commentData,
       createdAt: serverTimestamp(),
+      tradeId,
+    };
+
+    batch.set(commentDocRef, commentDataWithTimestamp);
+    batch.set(userCommentDocRef, {
+      ...commentDataWithTimestamp,
+      commentId: commentDocRef.id,
     });
-    return docRef.id;
+
+    await batch.commit();
+    return commentDocRef.id;
   } catch (error) {
     console.error("댓글 작성 오류: ", error);
     throw error;
@@ -132,6 +154,35 @@ export async function GetComments(
     };
   } catch (error) {
     console.error("댓글 가져오기 오류: ", error);
+    throw error;
+  }
+}
+
+// 사용자별 댓글 조회
+export async function GetUserComments(
+  userId: string,
+  lastDoc: DocumentSnapshot
+): Promise<{ comments: Comment[]; lastDoc: DocumentSnapshot | null }> {
+  try {
+    const userCommentsRef = collection(db, "users", userId, "comments");
+    let q = query(userCommentsRef, orderBy("createdAt", "desc"), limit(10));
+
+    if (lastDoc) {
+      q = query(q, startAfter(lastDoc));
+    }
+
+    const querySnapshot = await getDocs(q);
+    const comments = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as unknown as Comment[];
+
+    return {
+      comments,
+      lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1],
+    };
+  } catch (error) {
+    console.error("사용자별 댓글 조회 오류: ", error);
     throw error;
   }
 }
