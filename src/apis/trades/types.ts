@@ -56,3 +56,15 @@ export const commentSchema = z.object({
   friendId: z.string(),
 });
 export type Comment = z.infer<typeof commentSchema>;
+
+export const userCommentSchema = z.object({
+  id: z.string(),
+  content: z.string(),
+  authorId: z.string(),
+  authorName: z.string(),
+  createdAt: z.instanceof(Timestamp),
+  friendId: z.string(),
+  tradeId: z.string(),
+  commentId: z.string(),
+});
+export type UserComment = z.infer<typeof userCommentSchema>;

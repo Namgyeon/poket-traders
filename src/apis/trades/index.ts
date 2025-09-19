@@ -17,6 +17,7 @@ import {
   Comment,
   PostCardTradeRequest,
   PostCommentRequest,
+  UserComment,
 } from "./types";
 import { db } from "@/lib/firebase";
 
@@ -162,7 +163,7 @@ export async function GetComments(
 export async function GetUserComments(
   userId: string,
   lastDoc: DocumentSnapshot
-): Promise<{ comments: Comment[]; lastDoc: DocumentSnapshot | null }> {
+): Promise<{ comments: UserComment[]; lastDoc: DocumentSnapshot | null }> {
   try {
     const userCommentsRef = collection(db, "users", userId, "comments");
     let q = query(userCommentsRef, orderBy("createdAt", "desc"), limit(10));
@@ -175,7 +176,7 @@ export async function GetUserComments(
     const comments = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
-    })) as unknown as Comment[];
+    })) as unknown as UserComment[];
 
     return {
       comments,

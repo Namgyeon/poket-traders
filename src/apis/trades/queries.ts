@@ -66,6 +66,7 @@ export const usePostComment = () => {
     }) => PostComment(tradeId, commentData),
     onSuccess: (_, { tradeId }) => {
       queryClient.invalidateQueries({ queryKey: ["comments", tradeId] });
+      queryClient.invalidateQueries({ queryKey: ["user-comments", tradeId] });
     },
   });
 };
