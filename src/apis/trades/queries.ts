@@ -8,6 +8,7 @@ import {
   GetCardTrade,
   GetCardTrades,
   GetComments,
+  GetUserComments,
   PostCardTrade,
   PostComment,
 } from "@/apis/trades";
@@ -65,6 +66,18 @@ export const usePostComment = () => {
     }) => PostComment(tradeId, commentData),
     onSuccess: (_, { tradeId }) => {
       queryClient.invalidateQueries({ queryKey: ["comments", tradeId] });
+      queryClient.invalidateQueries({ queryKey: ["user-comments", tradeId] });
     },
+  });
+};
+
+export const useGetUserComments = (userId: string) => {
+  return useInfiniteQuery({
+    queryKey: ["user-comments", userId],
+    queryFn: ({ pageParam }) =>
+      GetUserComments(userId, pageParam as DocumentSnapshot),
+    getNextPageParam: (lastPage) => lastPage.lastDoc,
+    initialPageParam: undefined as DocumentSnapshot | undefined,
+    enabled: !!userId,
   });
 };

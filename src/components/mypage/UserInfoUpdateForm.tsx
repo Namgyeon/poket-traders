@@ -17,8 +17,6 @@ export default function UserInfoUpdateForm() {
   const { mutateAsync: updateUserInfo } = useUpdateUserInfo();
   const { data: user } = useGetUser();
 
-  console.log("마이페이지 유저:", user);
-
   const {
     register,
     handleSubmit,
