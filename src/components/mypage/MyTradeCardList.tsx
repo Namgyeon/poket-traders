@@ -38,7 +38,7 @@ export default function MyTradeCardList() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">내가 쓴 글</h1>
+      <h1 className="text-3xl font-bold">내가 쓴 글</h1>
       <div className="max-h-[500px] space-y-4 overflow-y-auto">
         {myTrades?.map((trade, index) => {
           const isLastElement = index === myTrades.length - 1;

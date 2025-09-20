@@ -47,7 +47,7 @@ export default function MyCommentList() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">댓글 단 글</h1>
+      <h1 className="text-3xl font-bold">댓글 단 글</h1>
       <div className="max-h-[600px] space-y-4 overflow-y-auto">
         {commentedTrades?.map((trade, index) => {
           const isLastElement = index === commentedTrades.length - 1;
