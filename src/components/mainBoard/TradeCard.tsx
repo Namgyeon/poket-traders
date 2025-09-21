@@ -2,8 +2,9 @@ import { useGetComments } from "@/apis/trades/queries";
 import { CardTrade } from "@/apis/trades/types";
 import { ChatBubbleLeftIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import CommentList from "./CommentList";
-import CommentForm from "./CommentForm";
+import CommentList from "@/components/mainBoard/CommentList";
+import CommentForm from "@/components/mainBoard/CommentForm";
+import FriendId from "@/components/ui/FriendId";
 
 interface TradeCardProps {
   cardTrade: CardTrade;
@@ -18,8 +19,6 @@ export default function TradeCard({
 }: TradeCardProps) {
   const [isOpenComments, setIsOpenComments] = useState(false);
   const { data: comments } = useGetComments(cardTrade.id);
-  console.log(cardTrade.id);
-  console.log(comments);
 
   const handleOpenComments = () => {
     setIsOpenComments(true);
@@ -47,12 +46,7 @@ export default function TradeCard({
             ).toLocaleDateString("ko-KR")}
           </p>
         </div>
-        <div className="bg-blue-100 px-3 py-1 rounded-full text-sm font-medium">
-          <p>
-            <span className="font-bold text-gray-700">친구 ID : </span>
-            {cardTrade.friendId}
-          </p>
-        </div>
+        <FriendId friendId={cardTrade.friendId} />
       </div>
 
       {/* 내용 */}
