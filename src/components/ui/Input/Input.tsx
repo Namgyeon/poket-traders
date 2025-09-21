@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, InputHTMLAttributes, useState } from "react";
+import { forwardRef, InputHTMLAttributes, useEffect, useState } from "react";
 import clsx from "clsx";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -9,6 +9,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   labelId?: string;
   placeholder?: string;
+  hasValue?: boolean;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -22,12 +23,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       onFocus,
       onBlur,
       placeholder,
+      hasValue,
       ...props
     },
     ref
   ) => {
     const [isFocused, setIsFocused] = useState(false);
-    const hasValue = props.value && String(props.value).length > 0;
+
     const shouldLabelFloat = isFocused || hasValue;
 
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {

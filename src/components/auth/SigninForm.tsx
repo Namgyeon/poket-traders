@@ -35,9 +35,6 @@ export default function SigninForm() {
       loading: "로그인 중입니다... ⏳",
       success: (userData) => `🎉 환영합니다, ${userData.nickname}님!`,
       error: (error) => {
-        console.error("Signin failed:", error);
-        console.error("Error code:", error.code);
-        console.error("Error message:", error.message);
         return getAuthErrorMessage(error.code);
       },
     });
@@ -60,6 +57,7 @@ export default function SigninForm() {
           labelId="email"
           value={watchedValues.email}
           {...register("email")}
+          hasValue={!!watchedValues.email}
           error={!!errors.email}
           errorMessage={errors.email?.message}
         />
@@ -69,6 +67,7 @@ export default function SigninForm() {
           label="Password"
           labelId="password"
           value={watchedValues.password}
+          hasValue={!!watchedValues.password}
           {...register("password")}
           error={!!errors.password}
           errorMessage={errors.password?.message}

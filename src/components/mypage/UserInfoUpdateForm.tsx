@@ -21,11 +21,14 @@ export default function UserInfoUpdateForm() {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isValid, isSubmitting },
   } = useForm<UserInfoUpdateFormRequest>({
     resolver: zodResolver(userInfoUpdateFormSchema),
     mode: "onChange",
   });
+
+  const watchedValues = watch();
 
   useEffect(() => {
     if (user) {
@@ -57,12 +60,14 @@ export default function UserInfoUpdateForm() {
       <Input
         label="닉네임"
         {...register("nickname")}
+        hasValue={!!watchedValues.nickname}
         error={!!errors.nickname}
         errorMessage={errors.nickname?.message}
       />
       <Input
         label="친구 ID"
         {...register("friendId")}
+        hasValue={!!watchedValues.friendId}
         error={!!errors.friendId}
         errorMessage={errors.friendId?.message}
       />
