@@ -6,6 +6,7 @@ import { useGetCardTrades, useGetUserComments } from "@/apis/trades/queries";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useRouter } from "next/navigation";
 import TradeCard from "@/components/mainBoard/TradeCard";
+import Spinner from "@/components/ui/Spinner";
 
 export default function MyCommentList() {
   const { data: user } = useGetUser();
@@ -21,6 +22,7 @@ export default function MyCommentList() {
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
+    isLoading,
   } = useGetCardTrades();
 
   const commentedTrades = allTrades?.pages
@@ -55,6 +57,8 @@ export default function MyCommentList() {
           return (
             <div key={trade.id} className="relative">
               <TradeCard
+                isLoading={isLoading}
+                isFetchingNextPage={isFetchingNextPage}
                 cardTrade={trade}
                 isLastElement={isLastElement}
                 ref={ref}
@@ -67,7 +71,7 @@ export default function MyCommentList() {
           );
         })}
 
-        <div ref={ref}>{isFetchingNextPage && <div>Loading...</div>}</div>
+        <div ref={ref}>{isFetchingNextPage && <Spinner />}</div>
       </div>
     </div>
   );

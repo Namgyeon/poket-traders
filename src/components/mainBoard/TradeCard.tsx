@@ -9,12 +9,15 @@ import FriendId from "@/components/ui/FriendId";
 interface TradeCardProps {
   cardTrade: CardTrade;
   isLastElement: boolean;
+  isFetchingNextPage: boolean;
+  isLoading: boolean;
   ref: (node?: Element | null) => void;
 }
 
 export default function TradeCard({
   cardTrade,
   isLastElement,
+  isLoading,
   ref,
 }: TradeCardProps) {
   const [isOpenComments, setIsOpenComments] = useState(false);

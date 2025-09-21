@@ -1,6 +1,8 @@
 import { useGetComments } from "@/apis/trades/queries";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import FriendId from "../ui/FriendId";
+import FriendId from "@/components/ui/FriendId";
+import Spinner from "@/components/ui/Spinner";
+import CommentSkeleton from "@/components/ui/Skeleton/CommentSkeleton";
 
 interface CommentListProps {
   tradeId: string;
@@ -18,7 +20,7 @@ export default function CommentList({ tradeId }: CommentListProps) {
   const comments = data?.pages.flatMap((page) => page.comments) || [];
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <CommentSkeleton />;
   }
 
   return (
@@ -46,11 +48,7 @@ export default function CommentList({ tradeId }: CommentListProps) {
       ))}
 
       {/* 무한스크롤 옵저버 */}
-      {hasNextPage && (
-        <div ref={ref}>
-          {isFetchingNextPage ? <div>Loading...</div> : <div>Load More</div>}
-        </div>
-      )}
+      {hasNextPage && <div ref={ref}>{isFetchingNextPage && <Spinner />}</div>}
 
       {comments.length === 0 && <div>No comments</div>}
     </div>

@@ -4,6 +4,7 @@ import { useGetUser } from "@/apis/auth/queries";
 import { useGetCardTrades } from "@/apis/trades/queries";
 import TradeCard from "@/components/mainBoard/TradeCard";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import Spinner from "@/components/ui/Spinner";
 
 export default function MyTradeCardList() {
   const { data: user } = useGetUser();
@@ -12,6 +13,7 @@ export default function MyTradeCardList() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isLoading,
   } = useGetCardTrades();
 
   const { ref } = useInfiniteScroll({
@@ -48,12 +50,14 @@ export default function MyTradeCardList() {
               key={trade.id}
               cardTrade={trade}
               isLastElement={isLastElement}
+              isFetchingNextPage={isFetchingNextPage}
+              isLoading={isLoading}
               ref={ref}
             />
           );
         })}
 
-        <div ref={ref}>{isFetchingNextPage && <div>Loading...</div>}</div>
+        <div ref={ref}>{isFetchingNextPage && <Spinner />}</div>
       </div>
     </div>
   );
