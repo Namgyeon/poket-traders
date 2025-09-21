@@ -1,5 +1,6 @@
 import { useGetComments } from "@/apis/trades/queries";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import FriendId from "../ui/FriendId";
 
 interface CommentListProps {
   tradeId: string;
@@ -35,10 +36,7 @@ export default function CommentList({ tradeId }: CommentListProps) {
               </p>
             </div>
             <div>
-              <p className="px-2 py-1 text-sm font-medium bg-blue-100 rounded-full">
-                <span className="font-semibold">친구 ID</span> :{" "}
-                {comment.friendId}
-              </p>
+              <FriendId friendId={comment.friendId} />
             </div>
           </div>
           <div>
