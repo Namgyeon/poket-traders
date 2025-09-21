@@ -1,32 +1,32 @@
 "use client";
 
-import { getUser } from "@/apis/auth";
+import { useGetUser } from "@/apis/auth/queries";
 import { User } from "@/apis/auth/types";
 import { auth } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 
 export function useAuth() {
-  const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { data: user } = useGetUser();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        try {
-          const userData = await getUser();
-          setUser(userData);
-        } catch (error) {
-          console.error("사용자 정보 가져오기 실패:", error);
-          setUser(null);
-        }
-      } else {
-        setUser(null);
-      }
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setIsAuthenticated(!!firebaseUser);
       setLoading(false);
     });
     return () => unsubscribe();
   }, []);
 
-  return { user, loading };
+  const isUserHasFriendId = (user: User | null | undefined) => {
+    if (!user) return false;
+    return user.friendId !== "";
+  };
+
+  return {
+    user: isAuthenticated ? user : null,
+    loading,
+    isUserHasFriendId: isUserHasFriendId(user),
+  };
 }

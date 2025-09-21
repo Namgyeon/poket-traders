@@ -11,6 +11,7 @@ import Button from "@/components/ui/Button/Button";
 import { usePostComment } from "@/apis/trades/queries";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/utils/errorMessage";
+import { useAuth } from "@/hooks/useAuth";
 
 interface CommentFormProps {
   tradeId: string;
@@ -18,6 +19,7 @@ interface CommentFormProps {
 
 export default function CommentForm({ tradeId }: CommentFormProps) {
   const { data: user } = useGetUser();
+  const { isUserHasFriendId } = useAuth();
   const { mutateAsync: postComment } = usePostComment();
 
   const {
@@ -38,6 +40,10 @@ export default function CommentForm({ tradeId }: CommentFormProps) {
   const onSubmit = handleSubmit(async (data) => {
     if (!user) {
       toast.error("로그인 후 이용해주세요.");
+      return;
+    }
+    if (!isUserHasFriendId) {
+      toast.error("친구 ID가 설정되지 않았습니다.");
       return;
     }
     try {
