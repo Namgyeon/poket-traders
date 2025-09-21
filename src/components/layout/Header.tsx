@@ -10,7 +10,11 @@ import { toast } from "sonner";
 import { useGetUser } from "@/apis/auth/queries";
 
 export default function Header() {
-  const { user: isAuthenticated, loading: userLoading } = useAuth();
+  const {
+    user: isAuthenticated,
+    loading: userLoading,
+    isUserHasFriendId,
+  } = useAuth();
   const { data: user } = useGetUser();
 
   const handleLogout = async () => {
@@ -46,9 +50,17 @@ export default function Header() {
       {userLoading ? (
         <SkeletonHeader />
       ) : isAuthenticated && user ? (
-        <>
+        <div className="flex items-center gap-4">
+          {!isUserHasFriendId && (
+            <Link
+              href="/mypage"
+              className="text-lg font-bold text-red-400 cursor-pointer hover:text-sky-500 hover:bg-gray-200 rounded-md p-2 transition-all animate-bounce duration-300"
+            >
+              친구 ID 설정 필요
+            </Link>
+          )}
           <UserMenu user={user} options={options} />
-        </>
+        </div>
       ) : (
         <div className="flex items-center gap-4">
           <Link
