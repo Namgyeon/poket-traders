@@ -64,6 +64,7 @@ export default function CardTradeForm({ user, onClose }: CardTradeFormProps) {
         {...register("title")}
         value={watchedValues.title}
         error={!!errors.title}
+        hasValue={!!watchedValues.title}
         errorMessage={errors.title?.message}
         label="제목"
         name="title"
@@ -72,6 +73,7 @@ export default function CardTradeForm({ user, onClose }: CardTradeFormProps) {
         {...register("content")}
         value={watchedValues.content}
         error={!!errors.content}
+        hasValue={!!watchedValues.content}
         errorMessage={errors.content?.message}
         label="내용"
         name="content"
@@ -81,9 +83,10 @@ export default function CardTradeForm({ user, onClose }: CardTradeFormProps) {
         value={watchedValues.friendId}
         error={!!errors.friendId}
         errorMessage={errors.friendId?.message}
+        hasValue={!!watchedValues.friendId}
         label="친구 ID"
         name="friendId"
-        placeholder="1234-1234-1234-1234"
+        placeholder="1234123412341234"
       />
       <Controller
         name="offerCards"

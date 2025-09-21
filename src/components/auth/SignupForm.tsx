@@ -62,6 +62,7 @@ export default function SignupForm() {
         value={watchedValues.email}
         error={!!errors.email}
         errorMessage={errors.email?.message}
+        hasValue={!!watchedValues.email}
         {...register("email")}
       />
       <Input
@@ -71,6 +72,7 @@ export default function SignupForm() {
         value={watchedValues.nickname}
         error={!!errors.nickname}
         errorMessage={errors.nickname?.message}
+        hasValue={!!watchedValues.nickname}
         {...register("nickname")}
       />
       <Input
@@ -81,6 +83,7 @@ export default function SignupForm() {
         placeholder="-없이 입력해주세요. ex) 1234123412341234"
         error={!!errors.friendId}
         errorMessage={errors.friendId?.message}
+        hasValue={!!watchedValues.friendId}
         {...register("friendId")}
       />
       <PasswordInput

@@ -45,7 +45,8 @@ const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
     const setTags = onTagsChange ?? setInternalTags;
 
     const hasValue = props.value && String(props.value).length > 0;
-    const shouldLabelFloat = isFocused || hasValue || internalTags.length > 0;
+    const shouldLabelFloat =
+      tagInput.length > 0 || isFocused || hasValue || internalTags.length > 0;
 
     const handleCompositionStart = () => {
       setIsComposing(true);

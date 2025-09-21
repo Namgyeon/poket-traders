@@ -8,6 +8,7 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   errorMessage: string | undefined;
   label?: string;
   labelId?: string;
+  hasValue?: boolean;
   rows?: number;
 }
 
@@ -22,13 +23,15 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       onFocus,
       onBlur,
       rows,
+      hasValue,
       ...props
     },
     ref
   ) => {
     const [isFocused, setIsFocused] = useState(false);
-    const hasValue = props.value && String(props.value).length > 0;
-    const shouldLabelFloat = isFocused || hasValue;
+    const internalHasValue =
+      hasValue || (props.value && String(props.value).length > 0);
+    const shouldLabelFloat = isFocused || internalHasValue;
 
     const handleFocus = (e: React.FocusEvent<HTMLTextAreaElement>) => {
       setIsFocused(true);
