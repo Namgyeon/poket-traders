@@ -25,6 +25,7 @@ export default function MainBoardPage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isLoading,
   } = useGetCardTrades();
   const router = useRouter();
 
@@ -57,6 +58,7 @@ export default function MainBoardPage() {
             cardTrades={searchTrades}
             fetchNextPage={() => {}}
             hasNextPage={false}
+            isLoading={isLoading}
             isFetchingNextPage={false}
           />
         ) : (
@@ -64,6 +66,7 @@ export default function MainBoardPage() {
             cardTrades={allTrades ?? []}
             fetchNextPage={fetchNextPage}
             hasNextPage={hasNextPage}
+            isLoading={isLoading}
             isFetchingNextPage={isFetchingNextPage}
           />
         )}

@@ -1,12 +1,15 @@
 import { CardTrade } from "@/apis/trades/types";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import TradeCard from "./TradeCard";
+import TradeCard from "@/components/mainBoard/TradeCard";
+import Spinner from "@/components/ui/Spinner";
+import TradeCardSkeleton from "../ui/Skeleton/TradeCardSkeleton";
 
 interface TradeListProps {
   cardTrades: CardTrade[];
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
+  isLoading: boolean;
 }
 
 export default function TradeList({
@@ -14,12 +17,22 @@ export default function TradeList({
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
+  isLoading,
 }: TradeListProps) {
   const { ref } = useInfiniteScroll({
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
   });
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <TradeCardSkeleton />
+        <TradeCardSkeleton />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -31,16 +44,14 @@ export default function TradeList({
             key={cardTrade.id}
             cardTrade={cardTrade}
             isLastElement={isLastElement}
+            isFetchingNextPage={isFetchingNextPage}
+            isLoading={isLoading}
             ref={ref}
           />
         );
       })}
 
-      {isFetchingNextPage && (
-        <div className="text-center py-4">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-        </div>
-      )}
+      {isFetchingNextPage && <Spinner />}
     </div>
   );
 }
