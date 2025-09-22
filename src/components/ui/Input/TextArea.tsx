@@ -52,7 +52,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
             onBlur={handleBlur}
             rows={rows}
             className={clsx(
-              "w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-md",
+              "w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-md resize-none",
               className
             )}
             {...props}
