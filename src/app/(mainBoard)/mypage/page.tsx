@@ -5,7 +5,7 @@ import UserInfoUpdateForm from "@/components/mypage/UserInfoUpdateForm";
 
 export default function MyPage() {
   return (
-    <AuthGuard redirectTo="/signin">
+    <AuthGuard redirectTo="/">
       <div className="py-8 space-y-10">
         <UserInfoUpdateForm />
         <MyTradeCardList />
