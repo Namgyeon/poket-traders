@@ -14,6 +14,7 @@ interface TagInputProps extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage: string | undefined;
   label?: string;
   labelId?: string;
+  inputId?: string;
   tags?: string[];
   onTagsChange?: (tags: string[]) => void;
   maxTags?: number;
@@ -27,6 +28,7 @@ const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
       errorMessage,
       label,
       labelId,
+      inputId,
       onFocus,
       onBlur,
       tags: externalTags,
@@ -99,6 +101,7 @@ const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
         <div className="relative">
           <input
             ref={ref}
+            id={inputId}
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
             onCompositionStart={handleCompositionStart}
@@ -108,7 +111,7 @@ const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
             onKeyDown={handleKeyDown}
             type="text"
             className={clsx(
-              "w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-md placeholder:pl-20",
+              "w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-md placeholder:pl-24",
               className
             )}
             {...props}
