@@ -5,6 +5,8 @@ import { useState } from "react";
 import CommentList from "@/components/mainBoard/CommentList";
 import CommentForm from "@/components/mainBoard/CommentForm";
 import FriendId from "@/components/ui/FriendId";
+import { useGetUser } from "@/apis/auth/queries";
+import clsx from "clsx";
 
 interface TradeCardProps {
   cardTrade: CardTrade;
@@ -17,11 +19,13 @@ interface TradeCardProps {
 export default function TradeCard({
   cardTrade,
   isLastElement,
-  isLoading,
   ref,
 }: TradeCardProps) {
   const [isOpenComments, setIsOpenComments] = useState(false);
   const { data: comments } = useGetComments(cardTrade.id);
+  const { data: user } = useGetUser();
+
+  console.log(cardTrade);
 
   const handleOpenComments = () => {
     setIsOpenComments(true);
@@ -34,7 +38,10 @@ export default function TradeCard({
     <div
       key={cardTrade.id}
       ref={isLastElement ? ref : null}
-      className="flex flex-col gap-2 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-blue-200"
+      className={clsx(
+        "flex flex-col gap-2 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-blue-200",
+        user?.uid === cardTrade.uid ? "bg-gray-100" : "bg-white"
+      )}
     >
       {/* 헤더 */}
       <div className="flex flex-col md:flex-row gap-2 items-start justify-between mb-4">
