@@ -14,7 +14,7 @@ export default function QueryProvider({
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 60 * 1000, // 1분
+            staleTime: 0, // 1분
             retry: 1,
           },
         },
