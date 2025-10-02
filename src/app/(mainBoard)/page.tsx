@@ -10,8 +10,26 @@ import SearchInput from "@/components/ui/Input/SearchInput";
 import Modal from "@/components/ui/Modal/Modal";
 import { useAuth } from "@/hooks/useAuth";
 import { useModal } from "@/hooks/useModal";
+import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+
+export const metadata: Metadata = {
+  title: "거래 게시판 | Poket Traders",
+  description:
+    "Poket Traders에 거래 게시판을 통해 포켓몬 카드 거래를 시작하세요",
+  keywords: "포켓 포켓몬, 카드, 거래, 거래 게시판",
+  openGraph: {
+    title: "거래 게시판 | Poket Traders",
+    description:
+      "Poket Traders에 거래 게시판을 통해 포켓몬 카드 거래를 시작하세요",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 export default function MainBoardPage() {
   const [searchTrades, setSearchTrades] = useState<CardTrade[]>([]);
