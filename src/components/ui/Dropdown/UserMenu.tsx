@@ -5,7 +5,7 @@ import {
   MenuItems,
   Transition,
 } from "@headlessui/react";
-import Avatar from "../Avatar";
+import Avatar from "@/components/ui/Avatar";
 import { User } from "@/apis/auth/types";
 import { Fragment } from "react";
 import Link from "next/link";
@@ -28,39 +28,33 @@ export default function UserMenu({ user, options }: UserMenuProps) {
         <Avatar user={user} />
       </MenuButton>
 
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform scale-80"
-        enterTo="transform scale-100"
-        leave="transition ease-in duration-100"
-        leaveFrom="transform scale-100"
-        leaveTo="transform scale-95"
+      <MenuItems
+        modal={false}
+        anchor="bottom start"
+        className="absolute z-100 [--anchor-gap:8px] focus:outline-none border border-gray-200 rounded-md bg-white"
       >
-        <MenuItems className="absolute z-100 mt-2 focus:outline-none border border-gray-200 rounded-md bg-white">
-          {options.map((option, index) => {
-            return (
-              <MenuItem key={index}>
-                {option.href ? (
-                  <Link
-                    href={option.href}
-                    className="w-full flex items-center justify-between px-4 py-2 border-b border-gray-200 truncate hover:bg-gray-200 cursor-pointer"
-                  >
-                    {option.value}
-                  </Link>
-                ) : (
-                  <button
-                    onClick={option.onClick}
-                    className="w-full flex items-center justify-between px-4 py-2 border-b border-gray-200 truncate hover:bg-gray-200 cursor-pointer"
-                  >
-                    {option.value}
-                  </button>
-                )}
-              </MenuItem>
-            );
-          })}
-        </MenuItems>
-      </Transition>
+        {options.map((option, index) => {
+          return (
+            <MenuItem key={index}>
+              {option.href ? (
+                <Link
+                  href={option.href}
+                  className="w-full flex items-center justify-between px-4 py-2 border-b border-gray-200 truncate hover:bg-gray-200 cursor-pointer"
+                >
+                  {option.value}
+                </Link>
+              ) : (
+                <button
+                  onClick={option.onClick}
+                  className="w-full flex items-center justify-between px-4 py-2 border-b border-gray-200 truncate hover:bg-gray-200 cursor-pointer"
+                >
+                  {option.value}
+                </button>
+              )}
+            </MenuItem>
+          );
+        })}
+      </MenuItems>
     </Menu>
   );
 }
