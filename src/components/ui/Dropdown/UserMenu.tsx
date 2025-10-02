@@ -1,13 +1,6 @@
-import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-  Transition,
-} from "@headlessui/react";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import Avatar from "@/components/ui/Avatar";
 import { User } from "@/apis/auth/types";
-import { Fragment } from "react";
 import Link from "next/link";
 
 interface MenuOption {
