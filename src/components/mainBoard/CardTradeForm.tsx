@@ -97,7 +97,9 @@ export default function CardTradeForm({ user, onClose }: CardTradeFormProps) {
             onTagsChange={field.onChange}
             error={!!errors.offerCards}
             errorMessage={errors.offerCards?.message}
-            label="교환할 카드"
+            label="보유중인 카드"
+            inputId="offerCards"
+            labelId="offerCards"
             name="offerCards"
             maxTags={10}
             placeholder="카드 이름을 입력하고 엔터를 누르세요."
@@ -114,6 +116,8 @@ export default function CardTradeForm({ user, onClose }: CardTradeFormProps) {
             error={!!errors.wantCards}
             errorMessage={errors.wantCards?.message}
             label="원하는 카드"
+            inputId="wantCards"
+            labelId="wantCards"
             name="wantCards"
             maxTags={10}
             placeholder="카드 이름을 입력하고 엔터를 누르세요."

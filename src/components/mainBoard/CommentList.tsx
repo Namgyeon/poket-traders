@@ -50,7 +50,15 @@ export default function CommentList({ tradeId }: CommentListProps) {
       {/* 무한스크롤 옵저버 */}
       {hasNextPage && <div ref={ref}>{isFetchingNextPage && <Spinner />}</div>}
 
-      {comments.length === 0 && <div>No comments</div>}
+      {comments.length === 0 && (
+        <div className="text-center py-4">
+          <div className="text-3xl mb-4">💬</div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            댓글이 없습니다..
+          </h3>
+          <p className="text-gray-500">거래요청에 댓글을 남겨보세요!</p>
+        </div>
+      )}
     </div>
   );
 }
