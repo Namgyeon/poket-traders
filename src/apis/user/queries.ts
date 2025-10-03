@@ -6,8 +6,12 @@ export function useUpdateUserInfo() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: UserInfoUpdateFormRequest) => updateUserInfo(data),
-    onSuccess: () => {
+    onSuccess: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["cardTrades"] });
+      queryClient.invalidateQueries({ queryKey: ["comments"] });
+      window.location.reload();
     },
   });
 }
