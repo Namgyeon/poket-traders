@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const { data: user } = useGetUser();
+  const { data: user, isLoading } = useGetUser();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -26,7 +26,7 @@ export function useAuth() {
 
   return {
     user: isAuthenticated ? user : null,
-    loading,
+    loading: loading || isLoading,
     isUserHasFriendId: isUserHasFriendId(user),
   };
 }
