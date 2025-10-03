@@ -75,7 +75,6 @@ export async function updateUserInfo(data: UserInfoUpdateFormRequest) {
       });
     }
 
-    // 모든 업데이트를 한 번에 실행
     await batch.commit();
     return {
       success: true,
