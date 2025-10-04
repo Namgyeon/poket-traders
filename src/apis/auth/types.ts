@@ -12,7 +12,11 @@ export type User = z.infer<typeof userSchema>;
 export const signupFormSchema = z
   .object({
     email: z.string().email("이메일 형식이 올바르지 않습니다."),
-    nickname: z.string().min(2, "닉네임은 2자 이상이어야 합니다."),
+    nickname: z
+      .string()
+      .min(2, "닉네임은 2자 이상이어야 합니다.")
+      .max(10, "닉네임은 10자 이하이어야 합니다.")
+      .trim(),
     friendId: z.string().min(1, "친구 ID를 입력해주세요."),
     password: z
       .string()
