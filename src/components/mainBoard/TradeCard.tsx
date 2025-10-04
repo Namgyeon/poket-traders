@@ -27,9 +27,10 @@ export default function TradeCard({
 
   console.log(cardTrade);
 
-  const handleOpenComments = () => {
-    setIsOpenComments(true);
+  const handleToggleComments = () => {
+    setIsOpenComments((prev) => !prev);
   };
+
   const handleCloseComments = () => {
     setIsOpenComments(false);
   };
@@ -105,7 +106,7 @@ export default function TradeCard({
       <div className="inline-flex items-center border-t border-gray-100">
         <div
           className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 rounded-md p-1"
-          onClick={handleOpenComments}
+          onClick={handleToggleComments}
         >
           <ChatBubbleLeftIcon className="w-6 h-6 text-gray-500" />
           <p className="text-sm text-gray-500">
