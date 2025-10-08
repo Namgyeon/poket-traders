@@ -12,6 +12,7 @@ export default function FriendId({ friendId }: FriendIdProps) {
       await navigator.clipboard.writeText(friendId);
       toast.success("친구 ID가 복사되었습니다.");
     } catch (error) {
+      console.error("친구 ID 복사 실패:", error);
       toast.error("다시 시도해주세요.");
     }
   };

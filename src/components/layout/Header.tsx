@@ -22,6 +22,7 @@ export default function Header() {
       await logout();
       toast.success("로그아웃 되었습니다.");
     } catch (error) {
+      console.error("로그아웃 실패:", error);
       toast.error("로그아웃 실패");
     }
   };

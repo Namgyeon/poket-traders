@@ -26,9 +26,13 @@ export const createWrapper = () => {
     },
   });
 
-  return ({ children }: { children: React.ReactNode }) => (
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
+
+  Wrapper.displayName = "TestWrapper"; // displayName 추가
+
+  return Wrapper;
 };
 
 // Firestore 모킹
@@ -83,7 +87,7 @@ vi.mock("sonner", () => ({
   toast: {
     success: vi.fn(),
     error: vi.fn(),
-    promise: vi.fn((promise, options) => promise),
+    promise: vi.fn((promise) => promise),
   },
   Toaster: vi.fn(() => null),
 }));
