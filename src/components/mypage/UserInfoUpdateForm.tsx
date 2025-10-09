@@ -22,7 +22,7 @@ export default function UserInfoUpdateForm() {
     handleSubmit,
     reset,
     watch,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isDirty, isValid, isSubmitting },
   } = useForm<UserInfoUpdateFormRequest>({
     resolver: zodResolver(userInfoUpdateFormSchema),
     mode: "onChange",
@@ -43,6 +43,7 @@ export default function UserInfoUpdateForm() {
     try {
       await updateUserInfo(data);
       toast.success("사용자 정보가 성공적으로 업데이트되었습니다.");
+      window.location.reload();
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -59,6 +60,7 @@ export default function UserInfoUpdateForm() {
     >
       <Input
         label="닉네임"
+        labelId="nickname"
         {...register("nickname")}
         hasValue={!!watchedValues.nickname}
         error={!!errors.nickname}
@@ -66,6 +68,7 @@ export default function UserInfoUpdateForm() {
       />
       <Input
         label="친구 ID"
+        labelId="friendId"
         {...register("friendId")}
         hasValue={!!watchedValues.friendId}
         error={!!errors.friendId}
@@ -74,7 +77,7 @@ export default function UserInfoUpdateForm() {
       <Button
         type="submit"
         variant="primary"
-        disabled={!isValid || isSubmitting}
+        disabled={!isDirty || !isValid || isSubmitting}
       >
         정보 수정
       </Button>

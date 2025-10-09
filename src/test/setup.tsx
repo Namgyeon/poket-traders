@@ -1,7 +1,7 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@testing-library/jest-dom";
-import { vi } from "vitest";
+import { beforeAll, vi } from "vitest";
 
 // Firebase Auth 모킹
 vi.mock("firebase/auth", () => ({
@@ -34,6 +34,13 @@ export const createWrapper = () => {
 
   return Wrapper;
 };
+
+beforeAll(() => {
+  Object.defineProperty(window, "location", {
+    configurable: true,
+    value: { ...window.location, reload: vi.fn() },
+  });
+});
 
 // Firestore 모킹
 vi.mock("firebase/firestore", () => ({

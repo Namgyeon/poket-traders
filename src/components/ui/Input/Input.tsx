@@ -47,6 +47,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <div className="relative">
           <input
             ref={ref}
+            id={labelId}
             onFocus={handleFocus}
             onBlur={handleBlur}
             type="text"
