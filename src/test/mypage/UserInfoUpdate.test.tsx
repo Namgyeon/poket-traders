@@ -24,8 +24,10 @@ describe("사용자 정보 수정 테스트", () => {
 
   it("사용자 정보가 성공적으로 수정됨", async () => {
     const user = userEvent.setup();
-    const nickname = "test";
-    const friendId = "1234123412341235";
+    const nickname = `test${Math.floor(Math.random() * 10000)}`;
+    const friendId = `${Math.floor(
+      1000000000000000 + Math.random() * 9000000000000000
+    )}`;
 
     vi.mocked(userApi.updateUserInfo).mockResolvedValue({
       success: true,

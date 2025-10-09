@@ -67,6 +67,7 @@ export default function CardTradeForm({ user, onClose }: CardTradeFormProps) {
         hasValue={!!watchedValues.title}
         errorMessage={errors.title?.message}
         label="제목"
+        labelId="title"
         name="title"
       />
       <Textarea
@@ -76,6 +77,7 @@ export default function CardTradeForm({ user, onClose }: CardTradeFormProps) {
         hasValue={!!watchedValues.content}
         errorMessage={errors.content?.message}
         label="내용"
+        labelId="content"
         name="content"
       />
       <Input
@@ -85,6 +87,7 @@ export default function CardTradeForm({ user, onClose }: CardTradeFormProps) {
         errorMessage={errors.friendId?.message}
         hasValue={!!watchedValues.friendId}
         label="친구 ID"
+        labelId="friendId"
         name="friendId"
         placeholder="1234123412341234"
       />
@@ -98,7 +101,6 @@ export default function CardTradeForm({ user, onClose }: CardTradeFormProps) {
             error={!!errors.offerCards}
             errorMessage={errors.offerCards?.message}
             label="보유중인 카드"
-            inputId="offerCards"
             labelId="offerCards"
             name="offerCards"
             maxTags={10}
@@ -116,7 +118,6 @@ export default function CardTradeForm({ user, onClose }: CardTradeFormProps) {
             error={!!errors.wantCards}
             errorMessage={errors.wantCards?.message}
             label="원하는 카드"
-            inputId="wantCards"
             labelId="wantCards"
             name="wantCards"
             maxTags={10}

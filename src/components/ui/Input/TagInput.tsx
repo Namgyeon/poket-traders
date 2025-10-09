@@ -101,7 +101,7 @@ const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
         <div className="relative">
           <input
             ref={ref}
-            id={inputId}
+            id={labelId}
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
             onCompositionStart={handleCompositionStart}
