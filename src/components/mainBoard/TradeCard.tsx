@@ -25,8 +25,6 @@ export default function TradeCard({
   const { data: comments } = useGetComments(cardTrade.id);
   const { data: user } = useGetUser();
 
-  console.log(cardTrade);
-
   const handleToggleComments = () => {
     setIsOpenComments((prev) => !prev);
   };

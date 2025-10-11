@@ -48,6 +48,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
         <div className="relative">
           <textarea
             ref={ref}
+            id={labelId}
             onFocus={handleFocus}
             onBlur={handleBlur}
             rows={rows}

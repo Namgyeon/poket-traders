@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, InputHTMLAttributes, useEffect, useState } from "react";
+import { forwardRef, InputHTMLAttributes, useState } from "react";
 import clsx from "clsx";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -47,6 +47,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <div className="relative">
           <input
             ref={ref}
+            id={labelId}
             onFocus={handleFocus}
             onBlur={handleBlur}
             type="text"

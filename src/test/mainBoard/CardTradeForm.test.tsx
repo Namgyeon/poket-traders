@@ -1,0 +1,124 @@
+import { User } from "@/apis/auth/types";
+import CardTradeForm from "@/components/mainBoard/CardTradeForm";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { createWrapper } from "../setup";
+import { toast } from "sonner";
+import { usePostCardTrade } from "@/apis/trades/queries";
+
+vi.mock("@/apis/trades/queries", () => ({
+  usePostCardTrade: vi.fn(),
+}));
+
+const mockUser: User = {
+  uid: "test-uid",
+  email: "test@example.com",
+  nickname: "테스트유저",
+  friendId: "1234123412341234",
+  createdAt: null,
+};
+
+describe("카드 거래글 작성", () => {
+  const mockOnClose = vi.fn();
+  const mockMutateAsync = vi.fn();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    vi.mocked(usePostCardTrade).mockReturnValue({
+      mutateAsync: mockMutateAsync,
+      isPending: false,
+    } as unknown as ReturnType<typeof usePostCardTrade>);
+  });
+
+  it("모든 필드를 입력하면 게시글이 성공적으로 등록됨", async () => {
+    const user = userEvent.setup();
+
+    mockMutateAsync.mockResolvedValue({ success: true });
+
+    render(<CardTradeForm user={mockUser} onClose={mockOnClose} />, {
+      wrapper: createWrapper(),
+    });
+
+    const titleInput = screen.getByLabelText("제목");
+    await user.type(titleInput, "테스트 제목");
+
+    const contentInput = screen.getByLabelText("내용");
+    await user.type(contentInput, "테스트 내용");
+
+    const friendIdInput = screen.getByLabelText("친구 ID");
+    expect(friendIdInput).toHaveValue(mockUser.friendId);
+
+    const offerCardsInput = screen.getByLabelText("보유중인 카드");
+    await user.type(offerCardsInput, "테스트 카드");
+    await user.keyboard("{Enter}");
+
+    const wantCardsInput = screen.getByLabelText("원하는 카드");
+    await user.type(wantCardsInput, "테스트 카드");
+    await user.keyboard("{Enter}");
+
+    const submitButton = screen.getByRole("button", { name: /제출/i });
+
+    await waitFor(() => {
+      expect(submitButton).not.toBeDisabled();
+    });
+
+    await user.click(submitButton);
+
+    await waitFor(() => {
+      expect(mockMutateAsync).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: "테스트 제목",
+          content: "테스트 내용",
+          friendId: mockUser.friendId,
+          offerCards: ["테스트 카드"],
+          wantCards: ["테스트 카드"],
+          authorName: mockUser.nickname,
+          uid: mockUser.uid,
+        })
+      );
+      expect(toast.success).toHaveBeenCalledWith("게시글 등록 완료");
+      expect(mockOnClose).toHaveBeenCalled();
+    });
+  });
+
+  it("초기 상태에서 제출 버튼이 비활성화됨", () => {
+    render(<CardTradeForm user={mockUser} onClose={mockOnClose} />, {
+      wrapper: createWrapper(),
+    });
+
+    const submitButton = screen.getByRole("button", { name: /제출/i });
+    expect(submitButton).toBeDisabled();
+  });
+
+  it("게시글 등록 실패 시 에러 토스트 표시", async () => {
+    const user = userEvent.setup();
+    mockMutateAsync.mockRejectedValue(new Error("게시글 등록 실패"));
+
+    render(<CardTradeForm user={mockUser} onClose={mockOnClose} />, {
+      wrapper: createWrapper(),
+    });
+
+    await user.type(screen.getByLabelText("제목"), "테스트");
+    await user.type(screen.getByLabelText("내용"), "테스트");
+    await user.type(screen.getByLabelText("보유중인 카드"), "피카츄");
+    await user.keyboard("{Enter}");
+    await user.type(screen.getByLabelText("원하는 카드"), "라이츄");
+    await user.keyboard("{Enter}");
+
+    const submitButton = screen.getByRole("button", { name: /제출/i });
+    await user.click(submitButton);
+
+    await waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith("게시글 등록 실패");
+      expect(mockOnClose).not.toHaveBeenCalled();
+    });
+
+    // 입력한 데이터 유지
+    expect(screen.getByLabelText("제목")).toHaveValue("테스트");
+    expect(screen.getByLabelText("내용")).toHaveValue("테스트");
+    expect(screen.getByText("피카츄")).toBeInTheDocument();
+    expect(screen.getByText("라이츄")).toBeInTheDocument();
+  });
+});

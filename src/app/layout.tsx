@@ -1,8 +1,8 @@
 import QueryProvider from "@/providers/query-provider";
+import { ReduxProvider } from "@/providers/redux-provider";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "sonner";
-import { ReduxProvider } from "@/providers/redux-provider";
 import "react-loading-skeleton/dist/skeleton.css";
 
 const pretendard = localFont({

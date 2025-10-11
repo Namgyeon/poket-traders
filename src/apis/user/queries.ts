@@ -11,7 +11,6 @@ export function useUpdateUserInfo() {
       queryClient.invalidateQueries({ queryKey: ["user"] });
       queryClient.invalidateQueries({ queryKey: ["cardTrades"] });
       queryClient.invalidateQueries({ queryKey: ["comments"] });
-      window.location.reload();
     },
   });
 }

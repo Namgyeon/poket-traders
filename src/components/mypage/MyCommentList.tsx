@@ -4,13 +4,11 @@
 import { useGetUser } from "@/apis/auth/queries";
 import { useGetCardTrades, useGetUserComments } from "@/apis/trades/queries";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import { useRouter } from "next/navigation";
 import TradeCard from "@/components/mainBoard/TradeCard";
 import Spinner from "@/components/ui/Spinner";
 
 export default function MyCommentList() {
   const { data: user } = useGetUser();
-  const router = useRouter();
 
   const { data: myComments } = useGetUserComments(user?.uid || "");
   const commentedTradesIds = myComments?.pages
