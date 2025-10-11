@@ -17,10 +17,14 @@ export const signupFormSchema = z
       .min(2, "닉네임은 2자 이상이어야 합니다.")
       .max(10, "닉네임은 10자 이하이어야 합니다.")
       .trim(),
-    friendId: z.string().min(1, "친구 ID를 입력해주세요."),
+    friendId: z
+      .string()
+      .min(1, "친구 ID를 입력해주세요.")
+      .max(16, "친구 ID는 16자입니다."),
     password: z
       .string()
       .min(8, "비밀번호는 8자 이상이어야 합니다.")
+      .max(64, "비밀번호는 64자 이하이어야 합니다.")
       .regex(
         /^(?=.*[a-zA-Z])(?=.*\d).+$/,
         "비밀번호는 영문과 숫자 조합이어야 합니다."
@@ -38,6 +42,7 @@ export const signinFormSchema = z.object({
   password: z
     .string()
     .min(8, "비밀번호는 8자 이상이어야 합니다.")
+    .max(64, "비밀번호는 64자 이하이어야 합니다.")
     .regex(
       /^(?=.*[a-zA-Z])(?=.*\d).+$/,
       "비밀번호는 영문과 숫자 조합이어야 합니다."

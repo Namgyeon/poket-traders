@@ -80,7 +80,6 @@ export async function PostCardTrade(data: PostCardTradeRequest) {
       updatedAt: serverTimestamp(),
     });
 
-    console.log("Document written with ID: ", docRef.id);
     return { success: true, id: docRef.id };
   } catch (error) {
     console.error("트레이드 카드 작성 오류: ", error);
