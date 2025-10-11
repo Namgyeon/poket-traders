@@ -6,11 +6,6 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createWrapper } from "../setup";
 import { toast } from "sonner";
 import { usePostCardTrade } from "@/apis/trades/queries";
-import { UseMutationResult } from "@tanstack/react-query";
-
-vi.mock("@/apis/trades", () => ({
-  PostCardTrade: vi.fn(),
-}));
 
 vi.mock("@/apis/trades/queries", () => ({
   usePostCardTrade: vi.fn(),
@@ -27,6 +22,7 @@ const mockUser: User = {
 describe("카드 거래글 작성", () => {
   const mockOnClose = vi.fn();
   const mockMutateAsync = vi.fn();
+
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -85,5 +81,44 @@ describe("카드 거래글 작성", () => {
       expect(toast.success).toHaveBeenCalledWith("게시글 등록 완료");
       expect(mockOnClose).toHaveBeenCalled();
     });
+  });
+
+  it("초기 상태에서 제출 버튼이 비활성화됨", () => {
+    render(<CardTradeForm user={mockUser} onClose={mockOnClose} />, {
+      wrapper: createWrapper(),
+    });
+
+    const submitButton = screen.getByRole("button", { name: /제출/i });
+    expect(submitButton).toBeDisabled();
+  });
+
+  it("게시글 등록 실패 시 에러 토스트 표시", async () => {
+    const user = userEvent.setup();
+    mockMutateAsync.mockRejectedValue(new Error("게시글 등록 실패"));
+
+    render(<CardTradeForm user={mockUser} onClose={mockOnClose} />, {
+      wrapper: createWrapper(),
+    });
+
+    await user.type(screen.getByLabelText("제목"), "테스트");
+    await user.type(screen.getByLabelText("내용"), "테스트");
+    await user.type(screen.getByLabelText("보유중인 카드"), "피카츄");
+    await user.keyboard("{Enter}");
+    await user.type(screen.getByLabelText("원하는 카드"), "라이츄");
+    await user.keyboard("{Enter}");
+
+    const submitButton = screen.getByRole("button", { name: /제출/i });
+    await user.click(submitButton);
+
+    await waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith("게시글 등록 실패");
+      expect(mockOnClose).not.toHaveBeenCalled();
+    });
+
+    // 입력한 데이터 유지
+    expect(screen.getByLabelText("제목")).toHaveValue("테스트");
+    expect(screen.getByLabelText("내용")).toHaveValue("테스트");
+    expect(screen.getByText("피카츄")).toBeInTheDocument();
+    expect(screen.getByText("라이츄")).toBeInTheDocument();
   });
 });
