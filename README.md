@@ -133,44 +133,5 @@
 ---
 
 ## 📂 프로젝트 구조
+<img width="243" height="602" alt="스크린샷 2025-10-12 오후 3 14 44" src="https://github.com/user-attachments/assets/5a0e0402-5f0c-4ce5-b78c-1638098a0e9e" />
 
-
-poket-traders/
-├── public/
-│   ├── fonts/
-│   ├── images/
-│   ├── logo.svg
-│   └── main-logo.svg
-├── src/
-│   ├── app/
-│   │   ├── (auth)/
-│   │   │   ├── layout.tsx
-│   │   │   ├── signin/
-│   │   │   │   └── page.tsx
-│   │   │   └── signup/
-│   │   │       └── page.tsx
-│   │   ├── (mainBoard)/
-│   │   │   ├── layout.tsx
-│   │   │   ├── page.tsx
-│   │   │   └── mypage/
-│   │   │       └── page.tsx
-│   │   ├── layout.tsx
-│   │   ├── globals.css
-│   │   ├── sitemap.ts
-│   │   └── robots.ts
-│   ├── components/
-│   │   ├── auth/
-│   │   ├── mainBoard/
-│   │   ├── mypage/
-│   │   └── ui/
-│   ├── apis/
-│   │   ├── auth/
-│   │   ├── trades/
-│   │   └── user/
-│   ├── hooks/
-│   ├── lib/
-│   ├── providers/
-│   ├── store/
-│   └── test/
-├── package.json
-└── README.md
