@@ -136,44 +136,41 @@
 
 
 poket-traders/
+├── public/
+│   ├── fonts/
+│   ├── images/
+│   ├── logo.svg
+│   └── main-logo.svg
 ├── src/
-│ ├── app/ # Next.js App Router
-│ │ ├── (auth)/ # 인증 관련 페이지
-│ │ │ ├── signin/ # 로그인
-│ │ │ └── signup/ # 회원가입
-│ │ ├── (mainBoard)/ # 메인 게시판
-│ │ │ ├── mypage/ # 마이페이지
-│ │ │ └── page.tsx # 메인 페이지
-│ │ ├── layout.tsx # 루트 레이아웃
-│ │ ├── sitemap.ts # SEO 사이트맵
-│ │ └── robots.ts # 크롤링 규칙
-│ ├── components/
-│ │ ├── auth/ # 인증 컴포넌트
-│ │ ├── mainBoard/ # 게시판 컴포넌트
-│ │ ├── mypage/ # 마이페이지 컴포넌트
-│ │ └── ui/ # 재사용 UI 컴포넌트
-│ │ ├── Button/
-│ │ ├── Input/
-│ │ ├── Modal/
-│ │ └── Skeleton/
-│ ├── apis/ # API 레이어
-│ │ ├── auth/ # 인증 API
-│ │ ├── trades/ # 거래 API
-│ │ └── user/ # 사용자 API
-│ ├── hooks/ # Custom Hooks
-│ │ ├── useAuth.ts # 인증 훅
-│ │ ├── useModal.ts # 모달 훅
-│ │ └── useInfiniteScroll.ts
-│ ├── store/ # Redux Store
-│ │ └── auth/
-│ ├── lib/ # 유틸리티
-│ │ ├── firebase.ts
-│ │ └── utils/
-│ └── test/ # 테스트 파일
-│ ├── auth/
-│ ├── comment/
-│ └── mainBoard/
-├── public/ # 정적 파일
-│ ├── fonts/
-│ └── images/
-└── package.json
+│   ├── app/
+│   │   ├── (auth)/
+│   │   │   ├── layout.tsx
+│   │   │   ├── signin/
+│   │   │   │   └── page.tsx
+│   │   │   └── signup/
+│   │   │       └── page.tsx
+│   │   ├── (mainBoard)/
+│   │   │   ├── layout.tsx
+│   │   │   ├── page.tsx
+│   │   │   └── mypage/
+│   │   │       └── page.tsx
+│   │   ├── layout.tsx
+│   │   ├── globals.css
+│   │   ├── sitemap.ts
+│   │   └── robots.ts
+│   ├── components/
+│   │   ├── auth/
+│   │   ├── mainBoard/
+│   │   ├── mypage/
+│   │   └── ui/
+│   ├── apis/
+│   │   ├── auth/
+│   │   ├── trades/
+│   │   └── user/
+│   ├── hooks/
+│   ├── lib/
+│   ├── providers/
+│   ├── store/
+│   └── test/
+├── package.json
+└── README.md
