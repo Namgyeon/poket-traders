@@ -48,6 +48,9 @@
 - Optimistic Update로 빠른 UI 반응
 - Skeleton UI로 로딩 상태 처리
 
+#### 스크린샷
+<img width="1420" height="710" alt="스크린샷 2025-10-12 오후 3 22 23" src="https://github.com/user-attachments/assets/83004521-4d9d-4ba7-928f-b34004a82256" />
+
 ---
 
 ### 2. 📝 로그인 페이지
@@ -59,6 +62,9 @@
 - **에러 메시지 한글화**: 사용자 친화적인 에러 메시지
 - **Google 소셜 로그인**: 클릭 한 번으로 간편 로그인
 - **Toast 알림**: 로그인 상태를 시각적으로 표시
+
+#### 스크린샷
+<img width="1432" height="717" alt="스크린샷 2025-10-12 오후 3 23 01" src="https://github.com/user-attachments/assets/57e0e117-a553-44e4-86a6-ef272b592f6e" />
 
 ---
 
@@ -75,6 +81,9 @@
   - 비밀번호 강도 체크 (최소 6자)
   - 비밀번호 일치 확인
   - 친구 ID 형식 검증 (16자리 숫자)
+
+#### 스크린샷
+<img width="1431" height="776" alt="스크린샷 2025-10-12 오후 3 24 15" src="https://github.com/user-attachments/assets/bf9ccb0c-5a2f-4fae-81c9-209ccd61f82e" />
 
 
 ---
@@ -95,6 +104,10 @@
 - 닉네임 변경
 - 친구 ID 변경 (거래 필수 정보)
 - 실시간 저장 및 Toast 알림
+
+#### 스크린샷
+<img width="1426" height="718" alt="스크린샷 2025-10-12 오후 3 25 09" src="https://github.com/user-attachments/assets/9c2fcf33-b1b8-4e2f-b34a-6597b224713c" />
+
 
 ---
 
