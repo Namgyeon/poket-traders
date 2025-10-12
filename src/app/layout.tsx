@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "sonner";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Metadata } from "next";
 
 const pretendard = localFont({
   src: [
@@ -16,6 +17,44 @@ const pretendard = localFont({
   variable: "--font-sans",
   display: "swap",
 });
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://poket-traders.vercel.app"),
+  title: {
+    default: "Poket Traders",
+    template: "%s | Poket Traders",
+  },
+  description: "Poket Traders는 포켓몬 카드 거래를 위한 커뮤니티 사이트입니다.",
+  keywords: ["포켓몬", "카드", "거래", "포켓", "포켓 포켓몬"],
+  openGraph: {
+    type: "website",
+    locale: "ko_KR",
+    siteName: "Poket Traders",
+    images: [
+      {
+        url: "/main-logo.svg",
+        width: 1200,
+        height: 630,
+        alt: "Poket Traders Logo",
+      },
+    ],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google:
+      "google-site-verification=uwOtcIGkRep49Znb6V0lpNgQolEeO45vJa2llOukg68",
+  },
+};
 
 export default function RootLayout({
   children,
