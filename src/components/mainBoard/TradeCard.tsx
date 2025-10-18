@@ -12,6 +12,7 @@ import { useModal } from "@/hooks/useModal";
 import Modal from "@/components/ui/Modal/Modal";
 import ChatModal from "@/components/chat/ChatModal";
 import { toast } from "sonner";
+import { getOrCreateChatRoom } from "@/apis/chat";
 
 interface TradeCardProps {
   cardTrade: CardTrade;
@@ -27,6 +28,9 @@ export default function TradeCard({
   ref,
 }: TradeCardProps) {
   const [isOpenComments, setIsOpenComments] = useState(false);
+  const [chatRoomId, setChatRoomId] = useState<string | null>(null);
+  const [isCreatingChat, setIsCreatingChat] = useState(false);
+
   const { data: comments } = useGetComments(cardTrade.id);
   const { data: user } = useGetUser();
 
@@ -40,12 +44,37 @@ export default function TradeCard({
     setIsOpenComments(false);
   };
 
-  const handleOpenChat = () => {
+  const handleOpenChat = async () => {
     if (!user) {
       toast.error("로그인이 필요합니다.");
+      return;
     }
 
-    openModal();
+    if (user?.uid === cardTrade.uid) {
+      toast.error("자신과의 채팅은 불가능합니다.");
+      return;
+    }
+
+    setIsCreatingChat(true);
+
+    try {
+      // 채팅방 생성 또는 가져오기
+      const roomId = await getOrCreateChatRoom({
+        currentUserId: user.uid,
+        currentUserNickname: user.nickname,
+        otherUserId: cardTrade.uid,
+        otherUserNickname: cardTrade.authorName,
+        currentUserAvatar: user.nickname || "",
+      });
+
+      setChatRoomId(roomId);
+      openModal();
+    } catch (error) {
+      console.error("채팅방 생성 실패:", error);
+      toast.error("채팅방을 열 수 없습니다.");
+    } finally {
+      setIsCreatingChat(false);
+    }
   };
 
   return (
@@ -73,7 +102,7 @@ export default function TradeCard({
         <div className="flex flex-col gap-2">
           <FriendId friendId={cardTrade.friendId} />
           <Button
-            onClick={openModal}
+            onClick={handleOpenChat}
             variant="primary"
             // disabled={user?.uid === cardTrade.uid}
           >
@@ -157,7 +186,13 @@ export default function TradeCard({
         onClose={closeModal}
         header={`${cardTrade.authorName}님과의 채팅`}
       >
-        <ChatModal />
+        {chatRoomId && (
+          <ChatModal
+            chatRoomId={chatRoomId}
+            otherUserName={cardTrade.authorName}
+            onClose={closeModal}
+          />
+        )}
       </Modal>
     </div>
   );

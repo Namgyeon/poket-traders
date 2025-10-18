@@ -31,8 +31,8 @@ export const createChatRoomParams = z.object({
   currentUserNickname: z.string(),
   otherUserId: z.string(),
   otherUserNickname: z.string(),
-  currentUserAvatar: z.string(),
-  otherUserAvatar: z.string(),
+  currentUserAvatar: z.string().optional().nullable(),
+  otherUserAvatar: z.string().optional().nullable(),
 });
 export type CreateChatRoomParams = z.infer<typeof createChatRoomParams>;
 
