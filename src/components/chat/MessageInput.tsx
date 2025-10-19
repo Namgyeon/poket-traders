@@ -33,7 +33,10 @@ export default function MessageInput({
   } = useForm<MessageFormData>();
 
   const onSubmit = async (data: MessageFormData) => {
-    if (data.message.trim() === "") return;
+    if (data.message.trim() === "") {
+      toast.error("메시지를 입력해주세요.");
+      return;
+    }
 
     try {
       const params: SendMessageParams = {
@@ -65,8 +68,12 @@ export default function MessageInput({
               errorMessage={errors.message?.message as string}
               className="w-full"
             />
-            <button type="submit" disabled={isSubmitting}>
-              <PaperAirplaneIcon className="w-10 h-10 p-2 absolute right-4 top-1/2 -translate-y-1/2 hover:bg-gray-200 rounded-md transition-all duration-300 cursor-pointer" />
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="absolute w-10 h-10 p-2 right-4 top-1/2 -translate-y-1/2 hover:bg-gray-200 rounded-md transition-all duration-300 cursor-pointer"
+            >
+              <PaperAirplaneIcon className="w-6 h-6" />
             </button>
           </div>
         </div>

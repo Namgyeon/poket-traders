@@ -1,6 +1,6 @@
 import { useGetUser } from "@/apis/auth/queries";
 import ChatInput from "@/components/chat/MessageInput";
-import { useAppSelector } from "@/store/hooks";
+import MessageList from "@/components/chat/MessageList";
 
 interface ChatModalProps {
   chatRoomId: string;
@@ -20,7 +20,8 @@ export default function ChatModal({
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
+      <MessageList chatRoomId={chatRoomId} currentUserId={user.uid} />
       <ChatInput
         chatRoomId={chatRoomId}
         currentUserId={user.uid}

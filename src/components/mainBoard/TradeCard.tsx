@@ -50,11 +50,6 @@ export default function TradeCard({
       return;
     }
 
-    if (user?.uid === cardTrade.uid) {
-      toast.error("자신과의 채팅은 불가능합니다.");
-      return;
-    }
-
     setIsCreatingChat(true);
 
     try {
