@@ -7,6 +7,7 @@ import {
   query,
   serverTimestamp,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { ChatRoom, CreateChatRoomParams, SendMessageParams } from "./types";
@@ -16,6 +17,8 @@ export async function getOrCreateChatRoom(
   params: CreateChatRoomParams
 ): Promise<string> {
   const {
+    tradeCardId,
+    tradeCardTitle,
     currentUserId,
     currentUserNickname,
     otherUserId,
@@ -24,31 +27,31 @@ export async function getOrCreateChatRoom(
     otherUserAvatar,
   } = params;
 
-  // 이미 존재하는 채팅방 찾기
-  const chatRoomRef = collection(db, "chatRooms");
-  const q = query(
-    chatRoomRef,
-    where("participants", "array-contains", currentUserId)
-  );
+  const chatKey = `${tradeCardId}_${otherUserId}`;
+  const reverseChatKey = `${tradeCardId}_${currentUserId}`;
 
-  const querySnapshot = await getDocs(q);
+  const currentUserDoc = await getDoc(doc(db, "users", currentUserId));
+  const chatRoomMap = currentUserDoc.data()?.chatRoomMap || {};
 
-  // 두 사용자가 모두 참여하는 채팅방 찾기
-  let existingChatRoomId: string | null = null;
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
-    if (data.participants.includes(otherUserId)) {
-      existingChatRoomId = doc.id;
-    }
-  });
+  if (chatRoomMap[chatKey]) {
+    return chatRoomMap[chatKey];
+  }
 
-  if (existingChatRoomId) {
-    return existingChatRoomId;
+  const otherUserDoc = await getDoc(doc(db, "users", otherUserId));
+  const otherUserChatRoomMap = otherUserDoc.data()?.chatRoomMap || {};
+
+  if (otherUserChatRoomMap[reverseChatKey]) {
+    await updateDoc(doc(db, "users", currentUserId), {
+      [`chatRoomMap.${chatKey}`]: otherUserChatRoomMap[reverseChatKey],
+    });
+    return otherUserChatRoomMap[reverseChatKey];
   }
 
   // 없으면 새로 생성
   const newChatRoomRef = doc(collection(db, "chatRooms"));
   await setDoc(newChatRoomRef, {
+    tradeCardId,
+    tradeCardTitle,
     participants: [currentUserId, otherUserId],
     participantInfo: {
       [currentUserId]: {
@@ -63,6 +66,14 @@ export async function getOrCreateChatRoom(
     createdAt: serverTimestamp(),
     lastMessage: null,
     lastMessageAt: null,
+  });
+
+  await updateDoc(doc(db, "users", currentUserId), {
+    [`chatRoomMap.${chatKey}`]: newChatRoomRef.id,
+  });
+
+  await updateDoc(doc(db, "users", otherUserId), {
+    [`chatRoomMap.${reverseChatKey}`]: newChatRoomRef.id,
   });
 
   return newChatRoomRef.id;
@@ -110,10 +121,19 @@ export async function getChatRoomInfo(
   const data = chatRoomsSnap.data();
   return {
     id: chatRoomsSnap.id,
+    tradeCardId: data.tradeCardId,
+    tradeCardTitle: data.tradeCardTitle,
     participants: data.participants,
     participantInfo: data.participantInfo,
     lastMessage: data.lastMessage,
     lastMessageAt: data.lastMessageAt?.toDate(),
     createdAt: data.createdAt?.toDate(),
   };
+}
+
+// 나의 채팅방 목록 가져오기
+export async function getMyChatRooms(userId: string): Promise<string[]> {
+  const userDoc = await getDoc(doc(db, "users", userId));
+  const chatRoomMap = userDoc.data()?.chatRoomMap || {};
+  return Object.values(chatRoomMap);
 }

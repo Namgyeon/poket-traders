@@ -1,4 +1,5 @@
 import AuthGuard from "@/components/auth/AuthGuard";
+import MyChatList from "@/components/mypage/MyChatList";
 import MyCommentList from "@/components/mypage/MyCommentList";
 import MyTradeCardList from "@/components/mypage/MyTradeCardList";
 import UserInfoUpdateForm from "@/components/mypage/UserInfoUpdateForm";
@@ -16,10 +17,13 @@ export const metadata: Metadata = {
 export default function MyPage() {
   return (
     <AuthGuard redirectTo="/">
-      <div className="py-8 space-y-10">
-        <UserInfoUpdateForm />
-        <MyTradeCardList />
-        <MyCommentList />
+      <div className="flex gap-8">
+        <MyChatList />
+        <div className="py-8 space-y-10">
+          <UserInfoUpdateForm />
+          <MyTradeCardList />
+          <MyCommentList />
+        </div>
       </div>
     </AuthGuard>
   );

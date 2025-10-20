@@ -7,6 +7,7 @@ import { SendMessageParams } from "@/apis/chat/types";
 import { sendMessage } from "@/apis/chat";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/utils/errorMessage";
+import { useSendMessage } from "@/apis/chat/queries";
 
 interface MessageInputProps {
   chatRoomId: string;
@@ -32,28 +33,32 @@ export default function MessageInput({
     formState: { errors, isSubmitting },
   } = useForm<MessageFormData>();
 
+  const sendMessageMutation = useSendMessage();
+
   const onSubmit = async (data: MessageFormData) => {
     if (data.message.trim() === "") {
       toast.error("메시지를 입력해주세요.");
       return;
     }
 
-    try {
-      const params: SendMessageParams = {
+    sendMessageMutation.mutate(
+      {
         chatRoomId,
         senderId: currentUserId,
         senderName: currentUserName,
-        senderAvatar: currentUserAvatar,
         text: data.message,
-      };
-
-      await sendMessage(params);
-      reset();
-      toast.success("메시지 전송 완료");
-    } catch (error) {
-      console.error("메시지 전송 오류: ", error);
-      toast.error(getErrorMessage(error));
-    }
+      },
+      {
+        onSuccess: () => {
+          reset();
+          toast.success("메시지 전송 완료");
+        },
+        onError: (error) => {
+          console.error("메시지 전송 오류:", error);
+          toast.error("메시지 전송에 실패했습니다.");
+        },
+      }
+    );
   };
 
   return (

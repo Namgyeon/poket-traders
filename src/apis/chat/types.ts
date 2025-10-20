@@ -12,6 +12,8 @@ export type Message = z.infer<typeof messageSchema>;
 
 export const chatRoomSchema = z.object({
   id: z.string(),
+  tradeCardId: z.string(),
+  tradeCardTitle: z.string(),
   participants: z.array(z.string()),
   participantInfo: z.record(
     z.string(),
@@ -27,6 +29,8 @@ export const chatRoomSchema = z.object({
 export type ChatRoom = z.infer<typeof chatRoomSchema>;
 
 export const createChatRoomParams = z.object({
+  tradeCardId: z.string(),
+  tradeCardTitle: z.string(),
   currentUserId: z.string(),
   currentUserNickname: z.string(),
   otherUserId: z.string(),

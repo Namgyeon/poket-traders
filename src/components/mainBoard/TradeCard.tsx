@@ -13,6 +13,7 @@ import Modal from "@/components/ui/Modal/Modal";
 import ChatModal from "@/components/chat/ChatModal";
 import { toast } from "sonner";
 import { getOrCreateChatRoom } from "@/apis/chat";
+import { useGetOrCreateChatRoom } from "@/apis/chat/queries";
 
 interface TradeCardProps {
   cardTrade: CardTrade;
@@ -33,6 +34,7 @@ export default function TradeCard({
 
   const { data: comments } = useGetComments(cardTrade.id);
   const { data: user } = useGetUser();
+  const createChatRoom = useGetOrCreateChatRoom();
 
   const { openModal, closeModal, isOpen } = useModal();
 
@@ -52,24 +54,28 @@ export default function TradeCard({
 
     setIsCreatingChat(true);
 
-    try {
-      // 채팅방 생성 또는 가져오기
-      const roomId = await getOrCreateChatRoom({
+    // 채팅방 생성 또는 가져오기
+    createChatRoom.mutate(
+      {
+        tradeCardId: cardTrade.id,
+        tradeCardTitle: cardTrade.title,
         currentUserId: user.uid,
         currentUserNickname: user.nickname,
         otherUserId: cardTrade.uid,
         otherUserNickname: cardTrade.authorName,
         currentUserAvatar: user.nickname || "",
-      });
-
-      setChatRoomId(roomId);
-      openModal();
-    } catch (error) {
-      console.error("채팅방 생성 실패:", error);
-      toast.error("채팅방을 열 수 없습니다.");
-    } finally {
-      setIsCreatingChat(false);
-    }
+      },
+      {
+        onSuccess: (roomId) => {
+          setChatRoomId(roomId);
+          openModal();
+        },
+        onError: (error) => {
+          console.error(error);
+          toast.error("채팅방 생성 실패");
+        },
+      }
+    );
   };
 
   return (
