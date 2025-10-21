@@ -44,10 +44,10 @@ export function useGetChatRoomInfo(chatRoomId: string | null) {
 }
 
 // 나의 채팅방 목록 조회
-export function useGetMyChatRooms(userId: string) {
-  return useQuery<string[], Error>({
+export function useGetMyChatRooms(userId: string | undefined) {
+  return useQuery<ChatRoom[], Error>({
     queryKey: ["myChatRooms", userId],
-    queryFn: () => getMyChatRooms(userId),
+    queryFn: () => getMyChatRooms(userId!),
     enabled: !!userId,
   });
 }

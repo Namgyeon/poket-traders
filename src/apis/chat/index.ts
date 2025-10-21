@@ -132,8 +132,17 @@ export async function getChatRoomInfo(
 }
 
 // 나의 채팅방 목록 가져오기
-export async function getMyChatRooms(userId: string): Promise<string[]> {
+export async function getMyChatRooms(userId: string): Promise<ChatRoom[]> {
   const userDoc = await getDoc(doc(db, "users", userId));
   const chatRoomMap = userDoc.data()?.chatRoomMap || {};
-  return Object.values(chatRoomMap);
+  const chatRoomIds = Object.values(chatRoomMap) as string[];
+
+  if (chatRoomIds.length === 0) return [];
+
+  const chatRoomsPromises = chatRoomIds.map((id) => getChatRoomInfo(id));
+  const chatRooms = await Promise.all(chatRoomsPromises);
+
+  return chatRooms
+    .filter((room) => room !== null)
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 }

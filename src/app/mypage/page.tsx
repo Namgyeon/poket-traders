@@ -17,9 +17,8 @@ export const metadata: Metadata = {
 export default function MyPage() {
   return (
     <AuthGuard redirectTo="/">
-      <div className="flex gap-8">
-        <MyChatList />
-        <div className="py-8 space-y-10">
+      <div className="flex gap-8 w-full">
+        <div className="py-8 space-y-10 w-full">
           <UserInfoUpdateForm />
           <MyTradeCardList />
           <MyCommentList />

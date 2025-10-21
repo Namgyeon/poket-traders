@@ -4,15 +4,9 @@ import MessageList from "@/components/chat/MessageList";
 
 interface ChatModalProps {
   chatRoomId: string;
-  otherUserName: string;
-  onClose: () => void;
 }
 
-export default function ChatModal({
-  chatRoomId,
-  otherUserName,
-  onClose,
-}: ChatModalProps) {
+export default function ChatModal({ chatRoomId }: ChatModalProps) {
   const { data: user } = useGetUser();
 
   if (!user) {
