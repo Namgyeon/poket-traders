@@ -20,6 +20,7 @@ import {
   UserComment,
 } from "./types";
 import { db } from "@/lib/firebase";
+import { getErrorMessage } from "@/lib/utils/errorMessage";
 
 // 모든 카드 트레이드 게시글 가져오기
 export async function GetCardTrades(
@@ -46,8 +47,11 @@ export async function GetCardTrades(
       lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1],
     };
   } catch (error) {
-    console.error("트레이드 카드 리스트 가져오기 오류: ", error);
-    throw error;
+    console.error(
+      "트레이드 카드 리스트 가져오기 오류: ",
+      getErrorMessage(error)
+    );
+    throw new Error(getErrorMessage(error));
   }
 }
 
@@ -66,8 +70,8 @@ export async function GetCardTrade(id: string) {
       throw new Error("No such document");
     }
   } catch (error) {
-    console.error("트레이드 카드 가져오기: ", error);
-    throw error;
+    console.error("트레이드 카드 가져오기:", getErrorMessage(error));
+    throw new Error(getErrorMessage(error));
   }
 }
 
@@ -82,8 +86,8 @@ export async function PostCardTrade(data: PostCardTradeRequest) {
 
     return { success: true, id: docRef.id };
   } catch (error) {
-    console.error("트레이드 카드 작성 오류: ", error);
-    throw error;
+    console.error("트레이드 카드 작성 오류: ", getErrorMessage(error));
+    throw new Error(getErrorMessage(error));
   }
 }
 
@@ -121,8 +125,8 @@ export async function PostComment(
     await batch.commit();
     return commentDocRef.id;
   } catch (error) {
-    console.error("댓글 작성 오류: ", error);
-    throw error;
+    console.error("댓글 작성 오류:", getErrorMessage(error));
+    throw new Error(getErrorMessage(error));
   }
 }
 
@@ -153,8 +157,8 @@ export async function GetComments(
       lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1],
     };
   } catch (error) {
-    console.error("댓글 가져오기 오류: ", error);
-    throw error;
+    console.error("댓글 가져오기 오류: ", getErrorMessage(error));
+    throw new Error(getErrorMessage(error));
   }
 }
 
@@ -182,7 +186,7 @@ export async function GetUserComments(
       lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1],
     };
   } catch (error) {
-    console.error("사용자별 댓글 조회 오류: ", error);
-    throw error;
+    console.error("사용자별 댓글 조회 오류: ", getErrorMessage(error));
+    throw new Error(getErrorMessage(error));
   }
 }

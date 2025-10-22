@@ -46,7 +46,7 @@ export default function Modal({
   if (!isOpen) return null;
 
   const modalContent = (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed min-h-[300px] min-w-[300px] inset-0 z-50 flex items-center justify-center">
       <div className="fixed inset-0 bg-black/50 transition-opacity" />
       {/* 모달 내용 */}
       <div className="relative w-full p-4 max-w-lg mx-auto bg-white rounded-lg space-y-6">

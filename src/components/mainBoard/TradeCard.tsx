@@ -7,6 +7,12 @@ import CommentForm from "@/components/mainBoard/CommentForm";
 import FriendId from "@/components/ui/FriendId";
 import { useGetUser } from "@/apis/auth/queries";
 import clsx from "clsx";
+import Button from "@/components/ui/Button/Button";
+import { useModal } from "@/hooks/useModal";
+import Modal from "@/components/ui/Modal/Modal";
+import ChatModal from "@/components/chat/ChatModal";
+import { toast } from "sonner";
+import { useGetOrCreateChatRoom } from "@/apis/chat/queries";
 
 interface TradeCardProps {
   cardTrade: CardTrade;
@@ -22,8 +28,13 @@ export default function TradeCard({
   ref,
 }: TradeCardProps) {
   const [isOpenComments, setIsOpenComments] = useState(false);
+  const [chatRoomId, setChatRoomId] = useState<string | null>(null);
+
   const { data: comments } = useGetComments(cardTrade.id);
   const { data: user } = useGetUser();
+  const createChatRoom = useGetOrCreateChatRoom();
+
+  const { openModal, closeModal, isOpen } = useModal();
 
   const handleToggleComments = () => {
     setIsOpenComments((prev) => !prev);
@@ -31,6 +42,36 @@ export default function TradeCard({
 
   const handleCloseComments = () => {
     setIsOpenComments(false);
+  };
+
+  const handleOpenChat = async () => {
+    if (!user) {
+      toast.error("로그인이 필요합니다.");
+      return;
+    }
+
+    // 채팅방 생성 또는 가져오기
+    createChatRoom.mutate(
+      {
+        tradeCardId: cardTrade.id,
+        tradeCardTitle: cardTrade.title,
+        currentUserId: user.uid,
+        currentUserNickname: user.nickname,
+        otherUserId: cardTrade.uid,
+        otherUserNickname: cardTrade.authorName,
+        currentUserAvatar: user.nickname || "",
+      },
+      {
+        onSuccess: (roomId) => {
+          setChatRoomId(roomId);
+          openModal();
+        },
+        onError: (error) => {
+          console.error(error);
+          toast.error("채팅방 생성 실패");
+        },
+      }
+    );
   };
 
   return (
@@ -55,7 +96,16 @@ export default function TradeCard({
             ).toLocaleDateString("ko-KR")}
           </p>
         </div>
-        <FriendId friendId={cardTrade.friendId} />
+        <div className="flex flex-col gap-2">
+          <FriendId friendId={cardTrade.friendId} />
+          <Button
+            onClick={handleOpenChat}
+            variant="primary"
+            disabled={user?.uid === cardTrade.uid}
+          >
+            채팅하기
+          </Button>
+        </div>
       </div>
 
       {/* 내용 */}
@@ -127,6 +177,14 @@ export default function TradeCard({
           </div>
         </div>
       )}
+
+      <Modal
+        isOpen={isOpen}
+        onClose={closeModal}
+        header={`${cardTrade.authorName}님과의 채팅`}
+      >
+        {chatRoomId && <ChatModal chatRoomId={chatRoomId} />}
+      </Modal>
     </div>
   );
 }
