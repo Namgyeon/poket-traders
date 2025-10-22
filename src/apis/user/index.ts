@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 import { UserInfoUpdateFormRequest } from "./types";
 import { auth, db } from "@/lib/firebase";
+import { getErrorMessage } from "@/lib/utils/errorMessage";
 
 export async function updateUserInfo(data: UserInfoUpdateFormRequest) {
   try {
@@ -81,11 +82,7 @@ export async function updateUserInfo(data: UserInfoUpdateFormRequest) {
       message: "사용자 정보가 성공적으로 업데이트되었습니다.",
     };
   } catch (error) {
-    if (error instanceof Error) {
-      console.error("사용자 정보 업데이트 오류:", error.message);
-      throw error;
-    }
-
-    throw new Error("알 수 없는 오류가 발생했습니다.");
+    console.error("사용자 정보 업데이트 오류:", getErrorMessage(error));
+    throw new Error(getErrorMessage(error));
   }
 }

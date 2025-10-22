@@ -12,7 +12,6 @@ import { useModal } from "@/hooks/useModal";
 import Modal from "@/components/ui/Modal/Modal";
 import ChatModal from "@/components/chat/ChatModal";
 import { toast } from "sonner";
-import { getOrCreateChatRoom } from "@/apis/chat";
 import { useGetOrCreateChatRoom } from "@/apis/chat/queries";
 
 interface TradeCardProps {
@@ -30,7 +29,6 @@ export default function TradeCard({
 }: TradeCardProps) {
   const [isOpenComments, setIsOpenComments] = useState(false);
   const [chatRoomId, setChatRoomId] = useState<string | null>(null);
-  const [isCreatingChat, setIsCreatingChat] = useState(false);
 
   const { data: comments } = useGetComments(cardTrade.id);
   const { data: user } = useGetUser();
@@ -51,8 +49,6 @@ export default function TradeCard({
       toast.error("로그인이 필요합니다.");
       return;
     }
-
-    setIsCreatingChat(true);
 
     // 채팅방 생성 또는 가져오기
     createChatRoom.mutate(
@@ -105,7 +101,7 @@ export default function TradeCard({
           <Button
             onClick={handleOpenChat}
             variant="primary"
-            // disabled={user?.uid === cardTrade.uid}
+            disabled={user?.uid === cardTrade.uid}
           >
             채팅하기
           </Button>
@@ -187,13 +183,7 @@ export default function TradeCard({
         onClose={closeModal}
         header={`${cardTrade.authorName}님과의 채팅`}
       >
-        {chatRoomId && (
-          <ChatModal
-            chatRoomId={chatRoomId}
-            otherUserName={cardTrade.authorName}
-            onClose={closeModal}
-          />
-        )}
+        {chatRoomId && <ChatModal chatRoomId={chatRoomId} />}
       </Modal>
     </div>
   );

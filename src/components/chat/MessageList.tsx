@@ -1,5 +1,6 @@
 import { useMessages } from "@/hooks/useChat";
 import { useEffect, useRef } from "react";
+import Spinner from "@/components/ui/Spinner";
 
 interface MessageListProps {
   chatRoomId: string;
@@ -18,7 +19,11 @@ export default function MessageList({
   }, [messages]);
 
   if (loading) {
-    return <div className="text-center py-4">Loading...</div>;
+    return (
+      <div className="text-center py-4">
+        <Spinner />
+      </div>
+    );
   }
 
   if (error) {
